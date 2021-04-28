@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+function main() {
+
+    if [[ $# -gt 0 ]]; then
+        # use command line arguments
+        git add $*
+    else
+        stage_modified_files
+        stage_untracked_files
+    fi
+
+    gstatus
+}
+
+function stage_modified_files() {
+
+    numModified=$(git diff --name-only | wc -l)
+    if [[ $numModified -eq 0 ]]; then
+        return
+    fi
+    gstatus
+    read -p "stage modified files? (press enter / n) : " -r
+    if [[ $REPLY != "" ]]; then
+        return
+    fi
+    git diff --name-only | fzf -m --color='fg:9' | xargs git add
+}
+
+function stage_untracked_files() {
+
+    numUntrackedFiles=$(git status --porcelain | grep "^?? " -c)
+    if [[ $numUntrackedFiles -eq 0 ]]; then
+        return
+    fi
+    gstatus
+    read -p "stage untracked files? (press enter / n) : " -r
+    if [[ $REPLY != "" ]]; then
+        return
+    fi
+    git status --porcelain | grep "^??" | sed -e 's/^[?]* //' | \
+        fzf -m --color='fg:9' | xargs git add
+}
+
+main $*

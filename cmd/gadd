@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1091
+
+# ensure the command is run in a git repo
+source __assertgitrepo
+
 function main() {
+
+    __assertgitrepo
 
     if [[ $# -gt 0 ]]; then
         # use command line arguments
@@ -15,11 +22,12 @@ function main() {
 
 function stage_modified_files() {
 
-    numModified=$(git diff --name-only | wc -l)
-    if [[ $numModified -eq 0 ]]; then
+    numModifiedFiles=$(git status --short | grep "^[ ]" -c)
+    if [[ $numModifiedFiles -eq 0 ]]; then
         return
     fi
     gstatus
+    echo
     read -p "stage modified files? (press enter / n) : " -r
     if [[ $REPLY != "" ]]; then
         return
@@ -30,11 +38,12 @@ function stage_modified_files() {
 
 function stage_untracked_files() {
 
-    numUntrackedFiles=$(git status --porcelain | grep "^?? " -c)
+    numUntrackedFiles=$(git status --short | grep "^??" -c)
     if [[ $numUntrackedFiles -eq 0 ]]; then
         return
     fi
     gstatus
+    echo
     read -p "stage untracked files? (press enter / n) : " -r
     if [[ $REPLY != "" ]]; then
         return

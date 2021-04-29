@@ -24,7 +24,8 @@ function stage_modified_files() {
     if [[ $REPLY != "" ]]; then
         return
     fi
-    git diff --name-only | fzf -m --color='fg:9' | xargs git add
+    git status --short | grep "^[ ]" | sed -e 's/ [A-Z] //' | \
+        fzf -m --color='fg:9' | xargs git add
 }
 
 function stage_untracked_files() {
@@ -38,7 +39,7 @@ function stage_untracked_files() {
     if [[ $REPLY != "" ]]; then
         return
     fi
-    git status --porcelain | grep "^??" | sed -e 's/^[?]* //' | \
+    git status --short | grep "^??" | sed -e 's/^[?]* //' | \
         fzf -m --color='fg:9' | xargs git add
 }
 

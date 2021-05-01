@@ -9,45 +9,45 @@ function main() {
 
     __assertgitrepo
 
+    # use command line arguments if provided
     if [[ $# -gt 0 ]]; then
-        # use command line arguments
-        git add $*
-    else
-        stage_modified_files
-        stage_untracked_files
+        [[ "$1" == "." ]] && git add -A || git add $*
+        gstatus
+        return
     fi
+
+    numModifiedFiles=$(git status --short | grep "^[ ]" -c)
+    numUntrackedFiles=$(git status --short | grep "^??" -c)
+    if [[ $((numModifiedFiles + numUntrackedFiles)) -eq 0 ]]; then
+        gstatus
+        printf "\n[INFO] No unstaged files.\n"
+        return
+    fi
+
+    [[ $numModifiedFiles -gt 0 ]] && stage_modified_files
+    [[ $numUntrackedFiles -gt 0 ]] && stage_untracked_files
 
     gstatus
 }
 
 function stage_modified_files() {
 
-    numModifiedFiles=$(git status --short | grep "^[ ]" -c)
-    if [[ $numModifiedFiles -eq 0 ]]; then
-        return
-    fi
     gstatus
     echo
     read -p "stage modified files? (press enter / n) : " -r
-    if [[ $REPLY != "" ]]; then
-        return
-    fi
+    [[ $REPLY != "" ]] && return
+
     git status --short | grep "^[ ]" | sed -e 's/ [A-Z] //' | \
         fzf -m --color='fg:9' | xargs git add
 }
 
 function stage_untracked_files() {
 
-    numUntrackedFiles=$(git status --short | grep "^??" -c)
-    if [[ $numUntrackedFiles -eq 0 ]]; then
-        return
-    fi
     gstatus
     echo
     read -p "stage untracked files? (press enter / n) : " -r
-    if [[ $REPLY != "" ]]; then
-        return
-    fi
+    [[ $REPLY != "" ]] && return
+
     git status --short | grep "^??" | sed -e 's/^[?]* //' | \
         fzf -m --color='fg:9' | xargs git add
 }

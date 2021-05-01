@@ -37,7 +37,7 @@ function stage_modified_files() {
     read -p "stage modified files? (press enter / n) : " -r
     [[ $REPLY != "" ]] && return
 
-    git status --short | grep "^[ ]" | sed -e 's/ [A-Z] //' | \
+    git status --short | grep "^[ ]" | sed -e 's/^ [A-Z] //' | \
         fzf -m --color='fg:9' | xargs git add
 }
 

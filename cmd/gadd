@@ -34,22 +34,22 @@ function stage_modified_files() {
 
     gstatus
     echo
-    read -p "stage modified files? (press enter / n) : " -r
-    [[ $REPLY != "" ]] && return
+    read -p "stage modified files? (press enter / n) : "
+    [[ -n "$REPLY" ]] && return
 
     git status --short | grep "^[ ]" | sed -e 's/^ [A-Z] //' | \
-        fzf -m --color='fg:9' | xargs git add
+        fzf -m --color='fg:160' | xargs git add
 }
 
 function stage_untracked_files() {
 
     gstatus
     echo
-    read -p "stage untracked files? (press enter / n) : " -r
-    [[ $REPLY != "" ]] && return
+    read -p "stage untracked files? (press enter / n) : "
+    [[ -n "$REPLY" ]] && return
 
     git status --short | grep "^??" | sed -e 's/^[?]* //' | \
-        fzf -m --color='fg:9' | xargs git add
+        fzf -m --color='fg:160' | xargs git add
 }
 
 main $*

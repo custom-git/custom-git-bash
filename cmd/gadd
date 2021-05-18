@@ -25,6 +25,7 @@ function main() {
     fi
 
     git status --short | grep "^[ ?]" | fzf -m --color 'fg:160' | sed -e 's/...//' | xargs git add
+    # TODO: check status of this command here (fzf, xargs or git add might fail)
 
     gstatus
 }

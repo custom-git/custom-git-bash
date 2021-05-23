@@ -9,18 +9,17 @@ function main() {
 
     __assertgitrepo
 
+    numUnstagedFiles=$(git status --short | grep "^[ ?]" -c)
+    if [[ $numUnstagedFiles -eq 0 ]]; then
+        gstatus
+        printf "\n[INFO] No unstaged files.\n"
+        return
+    fi
+
     # use command line arguments if provided
     if [[ $# -gt 0 ]]; then
         [[ "$1" == "." ]] && git add -A || git add $*
         gstatus
-        return
-    fi
-
-    numUnstagedFiles=$(git status --short | grep "^[ ?]" -c)
-
-    if [[ $numUnstagedFiles -eq 0 ]]; then
-        gstatus
-        printf "\n[INFO] No unstaged files.\n"
         return
     fi
 

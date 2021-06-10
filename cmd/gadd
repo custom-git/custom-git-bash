@@ -9,7 +9,7 @@ function main() {
 
     __assertgitrepo
 
-    numUnstagedFiles=$(git status --short | grep "^[ ?]" -c)
+    numUnstagedFiles=$(git status --short | grep "^.[A-Z?] " -c)
     if [[ $numUnstagedFiles -eq 0 ]]; then
         gstatus
         printf "\n[INFO] No unstaged files.\n"
@@ -23,7 +23,7 @@ function main() {
         return
     fi
 
-    git status --short | grep "^[ ?]" | fzf -m --color 'fg:160' | sed -e 's/...//' | xargs git add
+    git status --short | grep "^.[A-Z?] " | fzf -m --color 'fg:160' | sed -e 's/...//' | xargs git add
     # TODO: check status of this command here (fzf, xargs or git add might fail)
 
     gstatus

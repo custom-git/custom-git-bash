@@ -7,7 +7,7 @@
 #   Output: Some\ String
 function __trim_escaped_quotes() {
     str="${1}"
-    str=${str/%\\\"/}	    # replace suffix
-    str=${str/#\\\"/}     # replace prefix
+    str=${str/%\\\"/}   # replace suffix
+    str=${str/#\\\"/}   # replace prefix
     echo "${str}"
 }

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Usage: __trim_escaped_quotes "${rawStr}"
+# Output: rawStr without escaped quotes
+# Example:
+#   Input: \"Some\ String\"
+#   Output: Some\ String
+function __trim_escaped_quotes() {
+    str="${1}"
+    str=${str/%\\\"/}	    # replace suffix
+    str=${str/#\\\"/}     # replace prefix
+    echo "${str}"
+}

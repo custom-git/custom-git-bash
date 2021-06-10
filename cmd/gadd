@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC1091
+#shellcheck disable=SC1091
+#shellcheck disable=SC2155
 
 # ensure the command is run in a git repo
 source __assertgitrepo
+source __trim_escaped_quotes
 
 function main() {
 
@@ -16,10 +18,23 @@ function main() {
         return
     fi
 
-    git status --short | grep "^.[A-Z?] " | fzf -m --color 'fg:160' | sed -e 's/...//' | xargs git add
+    git status --short | grep "^.[A-Z?] " | fzf -m --color 'fg:160' | stage_selected_files
     # TODO: check status of this command here (fzf, xargs or git add might fail)
 
     gstatus
+}
+
+function stage_selected_files() {
+
+    while read -r item; do
+        if [[ "${item:0:1}" == "?" ]]; then
+            local file="${item#${item:0:3}}"    # remove prefix of length 3
+        else
+            local file="${item#${item:0:2}}"    # remove prefix of length 2
+        fi
+        local rawFile="$(getrawstr "${file}")"
+        git add "$(__trim_escaped_quotes "${rawFile}")"
+    done
 }
 
 if [[ $# -eq 0 ]]; then

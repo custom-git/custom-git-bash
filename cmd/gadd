@@ -39,9 +39,13 @@ function stage_selected_files() {
 
 if [[ $# -eq 0 ]]; then
     main
-elif [[ $# -eq 1 && "$*" == "." ]]; then
-    git add -A
-    gstatus
-else
-    echo "[ERROR] Only \".\" is accepted as a valid input to gadd"
+    exit 0
 fi
+
+if [[ $# -eq 1 && ( "$*" == "." || "$*" == "-A" ) ]]; then
+    git add $*
+    gstatus
+    exit 0
+fi
+
+echo "[ERROR] valid inputs to gadd: \".\", \"-A\""

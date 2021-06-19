@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# Usage: getrawstr "Input String"
-# Output: "Input\ String"
-function main() {
-    printf "%q" "${1}"
-}
-
-main "$*"

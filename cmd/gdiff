@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#shellcheck disable=SC2155
+#shellcheck disable=SC1091
+
+source "$__CUSTOM_CONSOLE_UTIL"/__print_info
+source "$__CUSTOM_GIT_UTIL"/__intend_to_add_untracked_files
+source "$__CUSTOM_GIT_UTIL"/__reset_intend_to_add_files
+source "$__CUSTOM_GIT_UTIL"/fzf_previews/__gdiff_preview
+source "$__CUSTOM_GIT_UTIL"/fzf_headers/__gdiff_header
+
+function main() {
+
+	local numChangedFiles=$(git status --short | grep "^[A-Z ?]" -c)
+	if [[ $numChangedFiles -eq 0 ]]; then
+		gstatus
+		echo
+		__print_info "No changes present."
+		return
+	fi
+
+	__intend_to_add_untracked_files
+
+	GDIFF_HEADER="$(__gdiff_header)"
+
+	while true; do
+		local str="$(git -c color.status=always status --short |\
+			fzf	--bind 'q:abort'\
+				--bind '?:toggle-preview'\
+				--header "${GDIFF_HEADER}"\
+				--preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gdiff_preview; __gdiff_preview {}")"
+
+		if [[ -z "${str}" ]]; then
+			break
+		fi
+		__gdiff_preview "${str}"
+	done
+
+	__reset_intend_to_add_files
+	gstatus
+}
+
+main

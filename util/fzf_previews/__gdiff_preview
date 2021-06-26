@@ -1,0 +1,48 @@
+#!/bin/bash
+
+#shellcheck disable=SC2155
+#shellcheck disable=SC1091
+
+source "$__CUSTOM_CONSOLE_UTIL"/__split_str
+source "$__CUSTOM_CONSOLE_UTIL"/__trim_double_quotes
+
+function __gdiff_preview() {
+
+	local str="${1}"
+
+	if [[ ${str:0:1} != "R" && ${str:1:1} != "R" ]]; then
+		local file=${str#"${str:0:3}"}		# Remove prefix
+		file="$(__trim_double_quotes "${file}")"
+
+		if [[ ${str:0:1} != " " ]];then		# file is staged
+			git diff --cached --color -- "${file}"
+		fi
+		if [[ ${str:1:1} != " " ]];then		# file is unstaged
+			git diff --color -- "${file}"
+		fi
+		return
+	fi
+
+	local files=${str#"${str:0:3}"}		# Remove prefix
+	__split_str "${files}" " -> "
+	local oldFile=""
+	local newFile=""
+	for item in "${RESULT_ARR[@]}"; do
+		local file="$(__trim_double_quotes "${item}")"
+		if [[ -z "${oldFile}" ]]; then
+			oldFile="${file}"
+		else
+			newFile="${file}"
+		fi
+	done
+
+	if [[ ${str:0:1} == "R" ]]; then
+		git diff --cached --color -- "${oldFile}" "${newFile}"
+
+		if [[ ${str:1:1} != " " ]]; then
+			git diff --color -- "${newFile}"
+		fi
+	else
+		git diff --color -- "${oldFile}" "${newFile}"
+	fi
+}

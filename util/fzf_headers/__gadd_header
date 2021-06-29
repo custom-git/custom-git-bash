@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2001
+#shellcheck disable=SC2155
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __gadd_header() {
+
+	local msg="gadd | <tab>: select multiple files, <enter>: stage file(s), <?>: toggle preview, <q/esc>: quit"
+	local colormsg="${UNDERLINE}${MAGENTA}gadd${RESET} | \
+${BLUE}<tab>: ${RESET}select multiple files, \
+${BLUE}<enter>: ${RESET}stage file(s), \
+${BLUE}<?>: ${RESET}toggle preview, \
+${BLUE}<q/esc>: ${RESET}quit"
+
+	local edge="$(echo "${msg}" | sed -e 's/./-/g')"
+	local GADD_HEADER="${edge}"'
+'"${colormsg}"'
+'"${edge}"'
+ '
+
+	echo "${GADD_HEADER}"
+}

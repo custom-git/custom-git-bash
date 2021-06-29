@@ -8,6 +8,7 @@ source "$__CUSTOM_GIT_UTIL"/fzf_headers/__gadd_header
 source "$__CUSTOM_CONSOLE_UTIL"/__trim_double_quotes
 source "$__CUSTOM_CONSOLE_UTIL"/__print_info
 source "$__CUSTOM_CONSOLE_UTIL"/__print_err
+source "$__CUSTOM_CONSOLE_UTIL"/__split_str
 
 function main() {
 

@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 
 clear
-git status
+
+if [[ $# -eq 0 ]]; then
+	git status
+else
+	git status "$*"
+fi

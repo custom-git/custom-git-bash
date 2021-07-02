@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #shellcheck disable=SC1091
+#shellcheck disable=SC2155
 
 source "$__CUSTOM_GIT_UTIL"/__intend_to_add_untracked_files
 source "$__CUSTOM_GIT_UTIL"/__reset_intend_to_add_files
@@ -22,7 +23,7 @@ function main() {
 
     __intend_to_add_untracked_files
 
-	GADD_HEADER="$(__gadd_header)"
+	local GADD_HEADER="$(__gadd_header)"
 
     git status --short | grep "^.[A-Z?] " |\
         fzf -m --color 'fg:160'\

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#shellcheck disable=SC2155
+#shellcheck disable=SC1091
+
+source "$__CUSTOM_CONSOLE_UTIL"/__print_as
+
+function __gshow_actions() {
+
+	local str="${1}"
+	local abbrCommitSHA="$(echo "$str" | grep -E "[0-9a-z]+" -o | head -n 1)"
+	local longCommitSHA="$(git rev-parse "${abbrCommitSHA}")"
+
+	printf "%s" "${longCommitSHA}" | clipboard
+
+	# the following statements will be printed in the preview window
+	echo
+	__print_as "yellow" "bold" "${longCommitSHA}"
+	echo " is copied to the clipboard."
+}

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#shellcheck disable=SC2155
+#shellcheck disable=SC1091
+
+source "$__CUSTOM_GIT_UTIL"/fzf_previews/__gshow_preview
+source "$__CUSTOM_GIT_UTIL"/fzf_headers/__gshow_header
+
+function main() {
+
+	local GSHOW_HEADER="$(__gshow_header)"
+
+	while true; do
+		local selectedStr="$(git log --pretty='format:%C(auto)%h%d [%an] [%ar] %s' --graph --color=always |\
+			fzf --bind "q:abort"\
+				--bind "?:toggle-preview"\
+				--bind "ctrl-c:preview(source $__CUSTOM_GIT_UTIL/fzf_actions/__gshow_actions; __gshow_actions {})"\
+				--header "${GSHOW_HEADER}"\
+				--preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gshow_preview; __gshow_preview {}")"
+
+		if [[ -z "${selectedStr}" ]]; then
+			break
+		fi
+		__gshow_preview "${selectedStr}"
+	done
+}
+
+main

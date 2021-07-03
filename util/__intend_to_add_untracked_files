@@ -6,6 +6,7 @@ source "$__CUSTOM_CONSOLE_UTIL"/__trim_double_quotes
 
 function __intend_to_add_untracked_files() {
 
+	local untrackedFile=""
 	git status --short | grep "^[?]" | while read -r untrackedFile; do
 		untrackedFile=${untrackedFile#"?? "}
 		untrackedFile="$(__trim_double_quotes "${untrackedFile}")"

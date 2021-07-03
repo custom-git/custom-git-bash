@@ -13,7 +13,7 @@ source "$__CUSTOM_CONSOLE_UTIL"/__split_str
 
 function main() {
 
-    numUnstagedFiles=$(git status --short | grep "^.[A-Z?] " -c)
+    local numUnstagedFiles=$(git status --short | grep "^.[A-Z?] " -c)
     if [[ $numUnstagedFiles -eq 0 ]]; then
         gstatus
         echo

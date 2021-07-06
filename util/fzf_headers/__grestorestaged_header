@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2001
+#shellcheck disable=SC2155
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __grestorestaged_header() {
+
+	local msg="grestorestaged | <tab>: select multiple files, <enter>: restore staged file(s), <?>: toggle preview, <q/esc>: quit"
+	local colormsg="${UNDERLINE}${MAGENTA}grestorestaged${RESET} | \
+${BLUE}<tab>: ${RESET}select multiple files, \
+${BLUE}<enter>: ${RESET}restore staged file(s), \
+${BLUE}<?>: ${RESET}toggle preview, \
+${BLUE}<q/esc>: ${RESET}quit"
+
+	local edge="$(echo "${msg}" | sed -e 's/./-/g')"
+	local GRESTORESTAGED_HEADER="${edge}"'
+'"${colormsg}"'
+'"${edge}"'
+ '
+
+	echo "${GRESTORESTAGED_HEADER}"
+}

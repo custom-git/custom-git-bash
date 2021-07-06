@@ -1,0 +1,115 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2155
+
+source "$__CUSTOM_GIT_UTIL"/__intend_to_add_untracked_files
+source "$__CUSTOM_GIT_UTIL"/__reset_intend_to_add_files
+source "$__CUSTOM_GIT_UTIL"/fzf_headers/__grestore_header
+source "$__CUSTOM_CONSOLE_UTIL"/__print_info
+source "$__CUSTOM_CONSOLE_UTIL"/__print_err
+source "$__CUSTOM_CONSOLE_UTIL"/__split_str
+
+function main() {
+
+    numUnstagedFiles=$(git status --short | grep "^.[A-Z?] " -c)
+    if [[ $numUnstagedFiles -eq 0 ]]; then
+        gstatus
+        echo
+        __print_info "No unstaged files."
+        return
+    fi
+
+    __intend_to_add_untracked_files
+
+    if [[ $# -gt 0 ]]; then
+        git status --short | grep "^.[A-Z?] " | read_and_restore_files
+    else
+        local GRESTORE_HEADER="$(__grestore_header)"
+        git status --short | grep "^.[A-Z?] " |\
+            fzf -m --color 'fg:160'\
+                --bind 'q:abort'\
+                --bind '?:toggle-preview'\
+                --header "${GRESTORE_HEADER}"\
+                --preview-window hidden\
+                --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gdiff_preview; __gdiff_preview {}" |\
+            read_and_restore_files
+    fi
+
+    __reset_intend_to_add_files
+    gstatus
+}
+
+function read_and_restore_files() {
+
+    while read -r str; do
+
+        if [[ ${str:0:1} != "R" ]]; then
+            if [[ ${str:1:1} == " " ]]; then
+                local file="${str#"${str:0:2}"}"
+            else
+                local file="${str#"${str:0:3}"}"
+            fi
+
+            if [[ "${str:0:1}" == "A" ]]; then
+                prompt_and_remove_file "${file}"
+            elif [[ "${str:0:1}" == "D" ]]; then
+                restore_file "${file}"
+            else
+                prompt_and_restore_file "${file}"
+            fi
+            continue
+        fi
+
+        __split_str "${str}" " -> "
+        local oldFile="${RESULT_ARR[0]}"
+        local newFile="${RESULT_ARR[1]}"
+
+        if [[ "${oldFile:1:1}" == " " ]]; then
+            oldFile="${oldFile#"R "}"
+            restore_file "${oldFile}"
+            prompt_and_remove_file "${newFile}"
+        else
+            prompt_and_restore_file "${newFile}"
+        fi
+    done
+}
+
+function prompt_and_remove_file() {
+    gstatus --short
+
+    echo
+    __println_as red "[changes will be lost.. this step can't be undone]"
+
+    local rawFile="$(getrawstr "${1}")"
+    git reset -- "${rawFile}" &> /dev/null
+    echo "${rawFile}" | xargs -p rm
+}
+
+function restore_file() {
+    gstatus --short
+    local rawFile="$(getrawstr "${1}")"
+    git restore "${rawFile}"
+}
+
+function prompt_and_restore_file() {
+    gstatus --short
+
+    echo
+    __println_as red "[changes will be lost.. this step can't be undone]"
+
+    local rawFile="$(getrawstr "${1}")"
+    echo "${rawFile}" | xargs -p git restore
+}
+
+if [[ $# -eq 0 ]]; then
+    main
+    exit 0
+fi
+
+if [[ $# -eq 1 && "$*" == "." ]]; then
+    main "."
+    exit 0
+fi
+
+__print_err "valid input to grestore: \".\""

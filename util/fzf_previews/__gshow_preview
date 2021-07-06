@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#shellcheck disable=SC2155
+
+function __gshow_preview() {
+
+	local str="${1}"
+	local commitSHA="$(echo "$str" | grep -E "[0-9a-z]+" -o | head -n 1)"
+	if [[ -z "${commitSHA}" ]]; then
+		return
+	fi
+	git show --color=always "${commitSHA}"
+}

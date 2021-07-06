@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+
+source "$__CUSTOM_CONSOLE_UTIL"/__split_str
+source "$__CUSTOM_CONSOLE_UTIL"/__trim_double_quotes
+
+function __reset_intend_to_add_files() {
+
+	git status --short | grep "^ [RA] " |\
+		while read -r fileToReset; do
+			case ${fileToReset:0:2} in
+				"R ")
+					local str=${fileToReset#"R "}	# Remove prefix
+					__split_str "${str}" " -> "
+					for file in "${RESULT_ARR[@]}"; do
+						__reset_file "${file}"
+					done
+				;;
+				"A ")
+					file=${fileToReset#"A "}	# Remove prefix
+					__reset_file "${file}"
+				;;
+				*)
+					__print_err "Shouldn't reach here."
+					break
+				;;
+			esac
+		done	
+}
+
+function __reset_file() {
+	local file="${1}"
+	file="$(__trim_double_quotes "${file}")"
+	git reset -- "${file}" &> /dev/null
+}

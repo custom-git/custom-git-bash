@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2001
+#shellcheck disable=SC2155
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __glog_header() {
+
+	local msg="glog | <enter>: git show, <ctrl-c>: copy commit SHA, <?>: toggle preview, <q/esc>: quit"
+	local colormsg="${UNDERLINE}${MAGENTA}glog${RESET} | \
+${BLUE}<enter>: ${RESET}git show, \
+${BLUE}<ctrl-c>: ${RESET}copy commit SHA, \
+${BLUE}<?>: ${RESET}toggle preview, \
+${BLUE}<q/esc>: ${RESET}quit"
+
+	local edge="$(echo "${msg}" | sed -e 's/./-/g')"
+	local GLOG_HEADER="${edge}"'
+'"${colormsg}"'
+'"${edge}"'
+ '
+
+	echo "${GLOG_HEADER}"
+}

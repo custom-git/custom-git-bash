@@ -1,0 +1,78 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2155
+
+source "$__CUSTOM_GIT_UTIL"/__intend_to_add_untracked_files
+source "$__CUSTOM_GIT_UTIL"/__reset_intend_to_add_files
+source "$__CUSTOM_GIT_UTIL"/fzf_headers/__grestorestaged_header
+source "$__CUSTOM_CONSOLE_UTIL"/__print_info
+source "$__CUSTOM_CONSOLE_UTIL"/__print_err
+source "$__CUSTOM_CONSOLE_UTIL"/__split_str
+
+function main() {
+
+    local numStagedFiles=$(git status --short | grep "^[A-Z]" -c)
+    if [[ $numStagedFiles -eq 0 ]]; then
+        gstatus
+        echo
+        __print_info "No staged files."
+        return
+    fi
+
+    __intend_to_add_untracked_files
+
+    if [[ $# -gt 0 ]]; then
+        git status --short | grep "^[A-Z]" | read_and_restore_staged_files
+    else
+        local GRESTORESTAGED_HEADER="$(__grestorestaged_header)"
+        git status --short | grep "^[A-Z]" |\
+            fzf -m --color 'fg:64'\
+                --bind 'q:abort'\
+                --bind '?:toggle-preview'\
+                --header "${GRESTORESTAGED_HEADER}"\
+                --preview-window hidden\
+                --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gdiff_preview; __gdiff_preview {}" |\
+            read_and_restore_staged_files
+    fi
+
+    __reset_intend_to_add_files
+    gstatus
+}
+
+function read_and_restore_staged_files() {
+
+    while read -r str; do
+
+        if [[ ${str:0:1} != "R" ]]; then
+            local file="${str#"${str:0:3}"}"    # remove first 3 characters
+            restore_staged_file "${file}"
+            continue
+        fi
+
+        str="${str#"${str:0:3}"}"               # remove first 3 characters
+        __split_str "${str}" " -> "
+        local oldFile="${RESULT_ARR[0]}"
+        local newFile="${RESULT_ARR[1]}"
+
+        restore_staged_file "${oldFile}"
+        restore_staged_file "${newFile}"
+    done
+}
+
+function restore_staged_file() {
+    local rawFile="$(getrawstr "${1}")"
+    git restore --staged "${rawFile}"
+}
+
+if [[ $# -eq 0 ]]; then
+    main
+    exit 0
+fi
+
+if [[ $# -eq 1 && "$*" == "." ]]; then
+    main "."
+    exit 0
+fi
+
+__print_err "valid input to grestorestaged: \".\""

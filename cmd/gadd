@@ -1,40 +1,72 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 #shellcheck disable=SC1091
 #shellcheck disable=SC2155
 
-# ensure the command is run in a git repo
-source __assertgitrepo
-source __trim_escaped_quotes
+source "$__CUSTOM_GIT_UTIL"/__intend_to_add_untracked_files
+source "$__CUSTOM_GIT_UTIL"/__reset_intend_to_add_files
+source "$__CUSTOM_GIT_UTIL"/fzf_headers/__gadd_header
+source "$__CUSTOM_CONSOLE_UTIL"/__trim_double_quotes
+source "$__CUSTOM_CONSOLE_UTIL"/__print_info
+source "$__CUSTOM_CONSOLE_UTIL"/__print_err
+source "$__CUSTOM_CONSOLE_UTIL"/__split_str
 
 function main() {
 
-    __assertgitrepo
-
-    numUnstagedFiles=$(git status --short | grep "^.[A-Z?] " -c)
+    local numUnstagedFiles=$(git status --short | grep "^.[A-Z?] " -c)
     if [[ $numUnstagedFiles -eq 0 ]]; then
         gstatus
-        printf "\n[INFO] No unstaged files.\n"
+        echo
+        __print_info "No unstaged files."
         return
     fi
 
-    git status --short | grep "^.[A-Z?] " | fzf -m --color 'fg:160' | stage_selected_files
-    # TODO: check status of this command here (fzf, xargs or git add might fail)
+    __intend_to_add_untracked_files
 
+	local GADD_HEADER="$(__gadd_header)"
+
+    git status --short | grep "^.[A-Z?] " |\
+        fzf -m --color 'fg:160'\
+            --bind 'q:abort'\
+            --bind '?:toggle-preview'\
+            --header "${GADD_HEADER}"\
+            --preview-window hidden\
+            --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gdiff_preview; __gdiff_preview {}" |\
+        read_and_stage_files
+
+    __reset_intend_to_add_files
     gstatus
 }
 
-function stage_selected_files() {
+function read_and_stage_files() {
 
-    while read -r item; do
-        if [[ "${item:0:1}" == "?" ]]; then
-            local file="${item#${item:0:3}}"    # remove prefix of length 3
-        else
-            local file="${item#${item:0:2}}"    # remove prefix of length 2
+    while read -r str; do
+
+        if [[ ${str:0:1} != "R" ]]; then
+            if [[ ${str:1:1} == " " ]]; then
+                local file="${str#"${str:0:2}"}"
+            else
+                local file="${str#"${str:0:3}"}"
+            fi
+            stage_file "${file}"
+            continue
         fi
-        local rawFile="$(getrawstr "${file}")"
-        git add "$(__trim_escaped_quotes "${rawFile}")"
+
+        __split_str "${str}" " -> "
+        local oldFile="${RESULT_ARR[0]}"
+        local newFile="${RESULT_ARR[1]}"
+
+        if [[ "${oldFile:1:1}" == " " ]]; then
+            oldFile="${oldFile#"R "}"
+            stage_file "${oldFile}"
+        fi
+        stage_file "${newFile}"
     done
+}
+
+function stage_file() {
+    file="$(__trim_double_quotes "${1}")"
+    git add "${file}"
 }
 
 if [[ $# -eq 0 ]]; then
@@ -42,10 +74,10 @@ if [[ $# -eq 0 ]]; then
     exit 0
 fi
 
-if [[ $# -eq 1 && ( "$*" == "." || "$*" == "-A" ) ]]; then
-    git add $*
+if [[ $# -eq 1 && ( "$*" == "." || "$*" == "-A") ]]; then
+    git add "$*"
     gstatus
     exit 0
 fi
 
-echo "[ERROR] valid inputs to gadd: \".\", \"-A\""
+__print_err "valid inputs to gadd: \".\", \"-A\""

@@ -1,0 +1,3 @@
+[submodule "custom-console-bash"]
+	path = custom-console-bash
+	url = https://github.com/custom-git/custom-console-bash.git

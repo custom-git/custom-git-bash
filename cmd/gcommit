@@ -69,7 +69,8 @@ function main() {
     git log -n 1
     gstatus
 
-    printf "\nTo add body, footer or edit the commit message, use "
+    echo
+    __print_info "To add body, footer or edit the commit message, use "
     __println_as magenta "git commit --amend"
     echo
 }

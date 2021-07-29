@@ -71,7 +71,7 @@ function main() {
 
     echo
     __print_info "To add body, footer or edit the commit message, use "
-    __println_as magenta "git commit --amend"
+    __println_as magenta "      git commit --amend"
     echo
 }
 

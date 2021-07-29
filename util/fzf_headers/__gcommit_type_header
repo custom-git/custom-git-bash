@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2155
+#shellcheck disable=SC2001
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __gcommit_type_header() {
+
+    local isBreakingChange="${1}"
+
+    local msg="<enter>: select commit type, <?>: toggle type definition, <esc>: quit"
+    local colormsg="${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET} \n\
+${BLUE}<enter>: ${RESET}select commit type, \
+${BLUE}<?>: ${RESET}toggle type definition, \
+${BLUE}<esc>: ${RESET}quit\n\n"
+
+    colormsg="${colormsg}Please select the commit type"
+    if [[ "${isBreakingChange}" == "true" ]]; then
+        colormsg="${colormsg} for the ${BLUE}BREAKING-CHANGE${RESET}"
+    fi
+
+    local edge="$(echo "${msg}" | sed "s/./-/g")"
+    local GCOMMIT_TYPE_HEADER="${edge}\n${colormsg}\n${edge}\n "
+    echo -e "${GCOMMIT_TYPE_HEADER}"
+}

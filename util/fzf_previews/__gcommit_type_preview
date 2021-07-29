@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+function __gcommit_type_preview() {
+
+    local commit_type="${1}"
+    case "${commit_type}" in
+        feat) echo "A new feature"
+        ;;
+        fix) echo "A bug fix"
+        ;;
+        perf) echo "A code change that improves performance"
+        ;;
+        refactor) echo "A code change that neither fixes a bug nor adds a feature"
+        ;;
+        test) echo "Adding missing tests or correcting existing tests"
+        ;;
+        style) echo "Changes that do not affect the meaning of the code (white-space, formatting, missing semicolons, etc)"
+        ;;
+        docs) echo "Documentation only changes"
+        ;;
+        build) echo "Changes that affect the build system or external dependencies"
+        ;;
+        ci) echo "Changes to our CI configuration files and scripts"
+        ;;
+        cd) echo "Changes to our CD configuration files and scripts"
+        ;;
+        BREAKING-CHANGE) echo "Introduces a breaking API change"
+        ;;
+        "DEFINE NEW COMMIT TYPE") echo "Define a new commit type"
+        ;;
+        *) echo "Unknown commit type"
+        ;;
+    esac
+}

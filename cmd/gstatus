@@ -2,7 +2,7 @@
 
 # shellcheck disable=SC1091
 
-source __assertgitrepo
+source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
 
 __assertgitrepo
 

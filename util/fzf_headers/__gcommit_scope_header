@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2155
+#shellcheck disable=SC2001
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __gcommit_scope_header() {
+
+    local addNewScope="${1}"
+
+    local msg="<enter>: Add the new commit scope to the list, <esc>: skip"
+    local edge="$(echo "${msg}" | sed "s/./-/g")"
+    local GCOMMIT_SCOPE_HEADER="${edge}\n"
+
+    local colorMsg="${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET} \n"
+    if [[ "${addNewScope}" == "true" ]]; then
+        colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}Add the new commit scope to the list, "
+        colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skip\n\n"
+        colorMsg="${colorMsg}Please enter the commit scope"
+        GCOMMIT_SCOPE_HEADER="${GCOMMIT_SCOPE_HEADER}\n${colorMsg}"
+    else
+        colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}Select a commit scope, "
+        colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skip"
+        GCOMMIT_SCOPE_HEADER="${GCOMMIT_SCOPE_HEADER}${colorMsg}\n${edge}\n "
+    fi
+
+    echo -e "${GCOMMIT_SCOPE_HEADER}"
+}

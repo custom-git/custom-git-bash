@@ -4,7 +4,7 @@
 #shellcheck disable=SC2155
 
 # ensure the command is run in a git repo
-source "${CUSTOM_GIT_UTIL}"/__assertgitrepo
+source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
 
 function main() {
 

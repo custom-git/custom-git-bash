@@ -2,6 +2,7 @@
 
 #shellcheck disable=SC2155
 #shellcheck disable=SC1091
+#shellcheck disable=SC2059
 
 source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
 source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__type_header
@@ -10,6 +11,7 @@ source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__description_header
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_info
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_as
 source "${__CUSTOM_CONSOLE_UTIL}"/__println_as
+source "${__CUSTOM_CONSOLE_UTIL}"/__common
 
 function main() {
 
@@ -153,7 +155,7 @@ function get_commit_description() {
 
 function print_commit_msg() {
     __print_as "bold" "COMMIT MESSAGE:- "
-    echo -n "${1}"
+    printf "${REVERSE}${1}${RESET}"
 }
 
 main

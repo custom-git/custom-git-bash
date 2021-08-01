@@ -7,6 +7,7 @@
 source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
 source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__type_header
 source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__scope_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__new_scope_header
 source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__description_header
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_info
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_as
@@ -52,9 +53,28 @@ function main() {
         return
     }
     commitMessage="${commitType}"
-    print_commit_msg "${commitMessage}"
 
-    local commitScope="$(get_commit_scope)"
+    local commitScope=""
+    while true; do
+        print_commit_msg "${commitMessage}"
+        commitScope="$(get_commit_scope)"
+        [ "${commitScope}" != "ADD NEW SCOPE" ] && break
+
+        local GCOMMIT_SCOPE_HEADER="$(__new_scope_header)"
+        print_commit_msg "${commitMessage}"
+        commitScope="$(echo "" | grep "x" |\
+                        fzf --height 10%\
+                            --info=hidden\
+                            --bind 'enter:print-query'\
+                            --header "${GCOMMIT_SCOPE_HEADER}")"
+
+        local repoPath="$(git rev-parse --show-toplevel)"
+        local commitScopeFile="${repoPath}/git-commit-scope.list"
+        # check if the new scope is already present
+        [ -n "${commitScope}" ] \
+            && ! grep -Fxq "${commitScope}" "${commitScopeFile}" \
+            && echo "${commitScope}" >> "${commitScopeFile}"
+    done
     [ -n "${commitScope}" ] && commitMessage="${commitMessage}(${commitScope})"
 
     [ "${isBreakingChange}" == "true" ] && commitMessage="${commitMessage}!"
@@ -119,26 +139,11 @@ function get_commit_scope() {
         commitScopes=("${commitScopes[@]}" "${commitScope}")
     done < "${commitScopeFile}"
 
-    local addNewScope=false
-    local GCOMMIT_SCOPE_HEADER="$(__scope_header "${addNewScope}")"
-
+    local GCOMMIT_SCOPE_HEADER="$(__scope_header)"
     commitScope="$(printf "%s\n" "${commitScopes[@]}" |\
                     fzf --height 55%\
                         --header "${GCOMMIT_SCOPE_HEADER}")"
 
-    if [[ "${commitScope}" == "ADD NEW SCOPE" ]]; then
-        addNewScope=true
-        local GCOMMIT_SCOPE_HEADER="$(__scope_header "${addNewScope}")"
-        commitScope="$(echo "" | grep "x" |\
-                        fzf --height 10%\
-                            --info=hidden\
-                            --bind 'enter:print-query'\
-                            --header "${GCOMMIT_SCOPE_HEADER}")"
-        # check if the new scope is already present
-        [ -n "${commitScope}" ] \
-            && ! grep -Fxq "${commitScope}" "${commitScopeFile}" \
-            && echo "${commitScope}" >> "${commitScopeFile}"
-    fi
     echo "${commitScope}"
 }
 

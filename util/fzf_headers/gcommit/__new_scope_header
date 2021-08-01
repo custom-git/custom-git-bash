@@ -8,16 +8,14 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __new_scope_header() {
 
-    local msg="", edge="", GCOMMIT_SCOPE_HEADER=""
-
     local colorMsg="${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET} \n"
-    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}Add the scope to the commit message, "
-    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skip\n\n"
+    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}adds the new commit scope to the list, "
+    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skips this step\n\n"
     colorMsg="${colorMsg}Enter the new commit scope (e.g. component or file name)"
 
-    msg="<enter>: Add the new commit scope to the list, <esc>: skip"
-    edge="$(echo "${msg}" | sed "s/./-/g")"
-    GCOMMIT_SCOPE_HEADER="${edge}\n${colorMsg}"
+    local msg="<enter>: adds the new commit scope to the list, <esc>: skips this step"
+    local edge="$(echo "${msg}" | sed "s/./-/g")"
+    local GCOMMIT_SCOPE_HEADER="${edge}\n${colorMsg}"
 
     echo -e "${GCOMMIT_SCOPE_HEADER}"
 }

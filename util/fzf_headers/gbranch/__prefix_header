@@ -8,15 +8,14 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __prefix_header() {
 
+    local colorMsg="${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/[optional type]/<branch_name>${RESET} \n"
+    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}adds the prefix to the branch name, "
+    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skips this step\n\n"
+    colorMsg="${colorMsg}(optional) Give a prefix to the branch name (e.g. issue number / JIRA ticket etc.)"
+
     local msg="(optional) Give a prefix to the branch name (e.g. issue number / JIRA ticket etc.)"
     local edge="$(echo "${msg}" | sed "s/./-/g")"
-    local GBRANCH_PREFIX_HEADER="${edge}\n"
-
-    local colorMsg="${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/[optional type]/<branch_name>${RESET} \n"
-    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}Add the prefix to the branch name, "
-    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skip\n\n"
-    colorMsg="${colorMsg}(optional) Give a prefix to the branch name (e.g. issue number / JIRA ticket etc.)"
-    GBRANCH_PREFIX_HEADER="${GBRANCH_PREFIX_HEADER}${colorMsg}"
+    local GBRANCH_PREFIX_HEADER="${edge}\n${colorMsg}"
 
     echo -e "${GBRANCH_PREFIX_HEADER}"
 }

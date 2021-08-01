@@ -9,20 +9,21 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 function __type_header() {
 
     local isBreakingChange="${1}"
-	local msg="<enter>: select commit type, <?>: toggle type definition, <esc>: quit"
 
-    local colormsg="${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET} \n\
-${BLUE}<enter>: ${RESET}select commit type, \
-${BLUE}<?>: ${RESET}toggle type definition, \
-${BLUE}<esc>: ${RESET}quit\n\n"
+    local colorMsg="${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET} \n"
+    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}selects the commit type, "
+    colorMsg="${colorMsg}${BLUE}<?>: ${RESET}toggles type definition, "
+    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}exits\n\n"
 
     if [[ "${isBreakingChange}" == "false" ]]; then
-        colormsg="${colormsg}Select the type of change that you're committing"
+        colorMsg="${colorMsg}Select the type of change that you're committing"
     else
-        colormsg="${colormsg}Select the type of ${BLUE}BREAKING-CHANGE${RESET} that you're committing"
+        colorMsg="${colorMsg}Select the type of ${BLUE}BREAKING-CHANGE${RESET} that you're committing"
     fi
 
+	local msg="<enter>: selects the commit type, <?>: toggles type definition, <esc>: exits"
     local edge="$(echo "${msg}" | sed "s/./-/g")"
-    local GCOMMIT_TYPE_HEADER="${edge}\n${colormsg}\n${edge}\n "
+    local GCOMMIT_TYPE_HEADER="${edge}\n${colorMsg}\n${edge}\n "
+
     echo -e "${GCOMMIT_TYPE_HEADER}"
 }

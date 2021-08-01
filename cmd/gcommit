@@ -27,6 +27,10 @@ function main() {
         read -r
         if [[ "${REPLY}" == "y" ]]; then
             git add -A
+        else
+            echo
+            __print_info "Stage the files to commit"
+            return
         fi
     fi
     gstatus

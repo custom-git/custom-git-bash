@@ -65,13 +65,14 @@ function main() {
     commitMessage="${commitMessage}${commitDescription}"
     printf "\r"
 
+    clear
     git commit -m "${commitMessage}"
     git log -n 1
-    gstatus
+    git status
 
     echo
-    __print_info "To add body, footer or edit the commit message, use "
-    __println_as magenta "      git commit --amend"
+    __print_info "To add the commit body/footer or edit the commit message, use "
+    __println_as magenta "    $ git commit --amend"
     echo
 }
 
@@ -126,7 +127,10 @@ function get_commit_scope() {
                             --info=hidden\
                             --bind 'enter:print-query'\
                             --header "${GCOMMIT_SCOPE_HEADER}")"
-        [ -n "${commitScope}" ] && echo "${commitScope}" >> "${commitScopeFile}"
+        # check if the new scope is already present
+        [ -n "${commitScope}" ] \
+            && ! grep -Fxq "${commitScope}" "${commitScopeFile}" \
+            && echo "${commitScope}" >> "${commitScopeFile}"
     fi
     echo "${commitScope}"
 }

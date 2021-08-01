@@ -4,9 +4,9 @@
 #shellcheck disable=SC1091
 
 source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
-source "${__CUSTOM_GIT_UTIL}"/fzf_headers/__gcommit_type_header
-source "${__CUSTOM_GIT_UTIL}"/fzf_headers/__gcommit_scope_header
-source "${__CUSTOM_GIT_UTIL}"/fzf_headers/__gcommit_description_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__type_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__scope_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__description_header
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_info
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_as
 source "${__CUSTOM_CONSOLE_UTIL}"/__println_as
@@ -88,7 +88,7 @@ function get_commit_type() {
         commitTypes=("${commitTypes[@]}" "BREAKING-CHANGE")
     }
 
-    local GCOMMIT_TYPE_HEADER="$(__gcommit_type_header "${isBreakingChange}")"
+    local GCOMMIT_TYPE_HEADER="$(__type_header "${isBreakingChange}")"
 
     local commitType="$(printf "%s\n" "${commitTypes[@]}" |\
                         fzf --height=60% --preview-window :10%\
@@ -114,14 +114,15 @@ function get_commit_scope() {
     done < "${commitScopeFile}"
 
     local addNewScope=false
-    local GCOMMIT_SCOPE_HEADER="$(__gcommit_scope_header "${addNewScope}")"
+    local GCOMMIT_SCOPE_HEADER="$(__scope_header "${addNewScope}")"
 
     commitScope="$(printf "%s\n" "${commitScopes[@]}" |\
                     fzf --height 55%\
                         --header "${GCOMMIT_SCOPE_HEADER}")"
+
     if [[ "${commitScope}" == "ADD NEW SCOPE" ]]; then
         addNewScope=true
-        local GCOMMIT_SCOPE_HEADER="$(__gcommit_scope_header "${addNewScope}")"
+        local GCOMMIT_SCOPE_HEADER="$(__scope_header "${addNewScope}")"
         commitScope="$(echo "" | grep "x" |\
                         fzf --height 10%\
                             --info=hidden\
@@ -137,7 +138,7 @@ function get_commit_scope() {
 
 function get_commit_description() {
 
-    local GCOMMIT_DESCRIPTION_HEADER="$(__gcommit_description_header)"
+    local GCOMMIT_DESCRIPTION_HEADER="$(__description_header)"
     local commitDescription="$(echo "" | grep "x" |\
                                 fzf --height 10%\
                                     --info=hidden\

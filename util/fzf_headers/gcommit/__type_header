@@ -6,7 +6,7 @@
 
 source "$__CUSTOM_CONSOLE_UTIL"/__common
 
-function __gcommit_type_header() {
+function __type_header() {
 
     local isBreakingChange="${1}"
 	local msg="<enter>: select commit type, <?>: toggle type definition, <esc>: quit"

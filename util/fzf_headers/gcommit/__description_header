@@ -6,7 +6,7 @@
 
 source "$__CUSTOM_CONSOLE_UTIL"/__common
 
-function __gcommit_description_header() {
+function __description_header() {
 
     local msg="Write a short, imperative tense description of the change (max 82 chars)"
     local edge="$(echo "${msg}" | sed "s/./-/g")"

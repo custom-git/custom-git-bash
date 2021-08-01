@@ -6,7 +6,7 @@
 
 source "$__CUSTOM_CONSOLE_UTIL"/__common
 
-function __gcommit_scope_header() {
+function __scope_header() {
 
     local addNewScope="${1}"
     local msg="", edge="", GCOMMIT_SCOPE_HEADER=""

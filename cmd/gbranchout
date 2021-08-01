@@ -28,11 +28,7 @@ function main() {
     print_branch_name "${branchName}"
 
     local branchType="$(get_branch_type)"
-    [ -z "${branchType}" ] && {
-        __print_info "branch type can't be empty"
-        return
-    }
-    branchName="${branchName}${branchType}/"
+    [ -n "${branchType}" ] && branchName="${branchName}${branchType}/"
     print_branch_name "${branchName}"
 
     local name="$(get_branch_name)"

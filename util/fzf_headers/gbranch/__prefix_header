@@ -12,7 +12,7 @@ function __prefix_header() {
     local edge="$(echo "${msg}" | sed "s/./-/g")"
     local GBRANCH_PREFIX_HEADER="${edge}\n"
 
-    local colorMsg="${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/<type>/<branch_name>${RESET} \n"
+    local colorMsg="${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/[optional type]/<branch_name>${RESET} \n"
     colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}Add the prefix to the branch name, "
     colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skip\n\n"
     colorMsg="${colorMsg}(optional) Give a prefix to the branch name (e.g. issue number / JIRA ticket etc.)"

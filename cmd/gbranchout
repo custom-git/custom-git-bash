@@ -1,0 +1,102 @@
+#!/bin/bash
+
+#shellcheck disable=SC2155
+#shellcheck disable=SC1091
+
+source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
+source "${__CUSTOM_GIT_UTIL}"/__ask
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranch/__type_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranch/__prefix_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranch/__name_header
+source "${__CUSTOM_CONSOLE_UTIL}"/__print_info
+source "${__CUSTOM_CONSOLE_UTIL}"/__print_as
+
+SUCCESS=0
+FAILURE=1
+
+function main() {
+
+    __assertgitrepo
+
+    local branchName=""
+    print_branch_name "${branchName}"
+
+    local prefix="$(get_prefix)"
+    [ -n "${prefix}" ] && branchName="${prefix}/"
+    print_branch_name "${branchName}"
+
+    local branchType="$(get_branch_type)"
+    [ -z "${branchType}" ] && {
+        __print_info "branch type can't be empty"
+        return
+    }
+    branchName="${branchName}${branchType}/"
+    print_branch_name "${branchName}"
+
+    local name="$(get_branch_name)"
+    [ -z "${name}" ] && {
+        __print_info "branch name can't be empty"
+        return
+    }
+    branchName="${branchName}${name}"
+    print_branch_name "${branchName}"
+
+    printf "\r"
+
+    local confirmation="$(__ask "Create branch \"${branchName}\" ?")"
+    [ "${confirmation}" != "yes" ] && return
+
+    git branch "${branchName}"
+    git push --set-upstream origin "${branchName}"
+    if (( $? != SUCCESS )); then
+        __print_err "Some error occurred while pushing the new branch to upstream. Please check your network."
+        exit ${FAILURE}
+    fi
+
+    local switch="$(__ask "Switch to the new branch \"${branchName}\"?")"
+    [ "${switch}" == "yes" ] && git checkout "${branchName}"
+}
+
+function get_prefix() {
+
+    local GBRANCH_PREFIX_HEADER="$(__prefix_header)"
+    local prefix="$(echo "" | grep "x" |\
+                    fzf --height 10%\
+                        --info=hidden\
+                        --bind 'enter:print-query'\
+                        --header "${GBRANCH_PREFIX_HEADER}")"
+    echo "${prefix}"
+}
+
+function get_branch_type() {
+
+    local GBRANCH_TYPE_HEADER="$(__type_header)"
+    local branchTypes=("feat" "fix" "perf" "refactor" "test" "style" "docs" "build" "ci" "cd")
+
+    local branchType="$(printf "%s\n" "${branchTypes[@]}" |\
+                        fzf --height=60% --preview-window :10%\
+                            --header "${GBRANCH_TYPE_HEADER}"\
+                            --bind '?:toggle-preview'\
+                            --preview-window hidden\
+                            --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gcommit_type_preview; __gcommit_type_preview {}")"
+
+    echo "${branchType}"
+}
+
+function get_branch_name() {
+
+    local GBRANCH_NAME_HEADER="$(__name_header)"
+    local name="$(echo "" | grep "x" |\
+                    fzf --height 10%\
+                        --info=hidden\
+                        --bind 'enter:print-query'\
+                        --header "${GBRANCH_NAME_HEADER}")"
+    echo "${name}"
+}
+
+function print_branch_name() {
+    __print_as "bold" "FORMATED BRANCH NAME:- "
+    echo -n "${1}"
+}
+
+main

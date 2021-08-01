@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2155
+#shellcheck disable=SC2001
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __type_header() {
+
+	local msg="<enter>: select branch type, <?>: toggle type definition, <esc>: quit"
+
+    local colormsg="${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/<type>/<branch_name>${RESET} \n\
+${BLUE}<enter>: ${RESET}select branch type, \
+${BLUE}<?>: ${RESET}toggle type definition, \
+${BLUE}<esc>: ${RESET}exit\n\n"
+
+    colormsg="${colormsg}Select the type of branch"
+
+    local edge="$(echo "${msg}" | sed "s/./-/g")"
+    local GBRANCH_TYPE_HEADER="${edge}\n${colormsg}\n${edge}\n "
+    echo -e "${GBRANCH_TYPE_HEADER}"
+}

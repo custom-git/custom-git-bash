@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2155
+#shellcheck disable=SC2001
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __ask_header() {
+
+    local question="${1}"
+
+    local msg="${question}"
+    local edge="$(echo "${msg}" | sed "s/./-/g")"
+
+    local colorMsg="${BLUE}<enter>: ${RESET}Select an option, "
+    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}exit\n\n"
+    colorMsg="${colorMsg}${question}"
+    ASK_HEADER="${edge}\n${colorMsg}\n${edge}\n"
+
+    echo -e "${ASK_HEADER}"
+}

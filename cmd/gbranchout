@@ -10,6 +10,7 @@ source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranch/__prefix_header
 source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranch/__name_header
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_info
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_as
+source "${__CUSTOM_CONSOLE_UTIL}"/__common
 
 SUCCESS=0
 FAILURE=1
@@ -43,7 +44,7 @@ function main() {
 
     printf "\r"
 
-    local confirmation="$(__ask "Create branch \"${branchName}\" ?")"
+    local confirmation="$(__ask "Create branch ${BLUE}\"${branchName}\"${RESET} ?")"
     [ "${confirmation}" != "yes" ] && return
 
     git branch "${branchName}"
@@ -53,7 +54,7 @@ function main() {
         exit ${FAILURE}
     fi
 
-    local switch="$(__ask "Switch to the new branch \"${branchName}\"?")"
+    local switch="$(__ask "Switch to the new branch ${BLUE}\"${branchName}\"${RESET} ?")"
     [ "${switch}" == "yes" ] && git checkout "${branchName}"
 }
 

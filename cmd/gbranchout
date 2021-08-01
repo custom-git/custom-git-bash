@@ -2,6 +2,7 @@
 
 #shellcheck disable=SC2155
 #shellcheck disable=SC1091
+#shellcheck disable=SC2059
 
 source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
 source "${__CUSTOM_GIT_UTIL}"/__ask
@@ -44,7 +45,7 @@ function main() {
 
     printf "\r"
 
-    local confirmation="$(__ask "Create branch ${BLUE}\"${branchName}\"${RESET} ?")"
+    local confirmation="$(__ask "Create branch ${REVERSE}${branchName}${RESET} ?")"
     [ "${confirmation}" != "yes" ] && return
 
     git branch "${branchName}"
@@ -54,7 +55,7 @@ function main() {
         exit ${FAILURE}
     fi
 
-    local switch="$(__ask "Switch to the new branch ${BLUE}\"${branchName}\"${RESET} ?")"
+    local switch="$(__ask "Switch to the new branch ${REVERSE}${branchName}${RESET} ?")"
     [ "${switch}" == "yes" ] && git checkout "${branchName}"
 }
 
@@ -96,8 +97,8 @@ function get_branch_name() {
 }
 
 function print_branch_name() {
-    __print_as "bold" "FORMATED BRANCH NAME:- "
-    echo -n "${1}"
+    __print_as "bold" "FORMATTED BRANCH NAME:- "
+    printf "${REVERSE}${1}${RESET}"
 }
 
 main

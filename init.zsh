@@ -2,7 +2,7 @@
 # Setup custom-git
 # ----------------
 
-export CUSTOM_GIT_HOME="${HOME}"/custom-git/custom-git-bash
+export CUSTOM_GIT_HOME="${HOME}"/.custom-git
 export CUSTOM_CONSOLE_HOME="${CUSTOM_GIT_HOME}"/custom-console-bash
 
 export __CUSTOM_GIT_UTIL="$CUSTOM_GIT_HOME"/util

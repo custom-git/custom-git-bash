@@ -5,6 +5,7 @@
 #shellcheck disable=SC2059
 
 source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
+source "${__CUSTOM_GIT_UTIL}"/__ask
 source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__type_header
 source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__scope_header
 source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__new_scope_header
@@ -14,9 +15,12 @@ source "${__CUSTOM_CONSOLE_UTIL}"/__print_as
 source "${__CUSTOM_CONSOLE_UTIL}"/__println_as
 source "${__CUSTOM_CONSOLE_UTIL}"/__common
 
-function main() {
+__assertgitrepo
 
-    __assertgitrepo
+REPO_PATH="$(git rev-parse --show-toplevel)"
+COMMIT_SCOPE_FILE="${REPO_PATH}/.gitcommitscopes"
+
+function main() {
 
     local numStagedFiles=$(git status --short | grep "^[A-Z]" -c)
     if [[ $numStagedFiles -eq 0 ]]; then
@@ -26,9 +30,9 @@ function main() {
             return
         fi
         gstatus
-        printf "\nCommit all the changes? (y/n): "
-        read -r
-        if [[ "${REPLY}" == "y" ]]; then
+
+        local commitAll="$(__ask "Stage all the files and commit ?")"
+        if [[ "${commitAll}" == "yes" ]]; then
             git add -A
         else
             echo
@@ -68,12 +72,10 @@ function main() {
                             --bind 'enter:print-query'\
                             --header "${GCOMMIT_SCOPE_HEADER}")"
 
-        local repoPath="$(git rev-parse --show-toplevel)"
-        local commitScopeFile="${repoPath}/git-commit-scope.list"
         # check if the new scope is already present
         [ -n "${commitScope}" ] \
-            && ! grep -Fxq "${commitScope}" "${commitScopeFile}" \
-            && echo "${commitScope}" >> "${commitScopeFile}"
+            && ! grep -Fxq "${commitScope}" "${COMMIT_SCOPE_FILE}" \
+            && echo "${commitScope}" >> "${COMMIT_SCOPE_FILE}"
     done
     [ -n "${commitScope}" ] && commitMessage="${commitMessage}(${commitScope})"
 
@@ -128,16 +130,14 @@ function get_commit_type() {
 
 function get_commit_scope() {
 
-    local repoPath="$(git rev-parse --show-toplevel)"
-    local commitScopeFile="${repoPath}/git-commit-scope.list"
-    if [[ ! -f "${commitScopeFile}" ]]; then
-        touch "${commitScopeFile}"
+    if [[ ! -f "${COMMIT_SCOPE_FILE}" ]]; then
+        touch "${COMMIT_SCOPE_FILE}"
     fi
     local commitScopes=("ADD NEW SCOPE")
     local commitScope=""
     while IFS= read -r commitScope; do
         commitScopes=("${commitScopes[@]}" "${commitScope}")
-    done < "${commitScopeFile}"
+    done < "${COMMIT_SCOPE_FILE}"
 
     local GCOMMIT_SCOPE_HEADER="$(__scope_header)"
     commitScope="$(printf "%s\n" "${commitScopes[@]}" |\

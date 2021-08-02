@@ -14,9 +14,9 @@ function __ask_header() {
     colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}exits\n\n"
     colorMsg="${colorMsg}${question}"
 
-    local msg="${question}"
+    local msg="<enter>: selects an option, <esc>: exits"
     local edge="$(echo "${msg}" | sed "s/./-/g")"
-    ASK_HEADER="${edge}\n${colorMsg}\n${edge}\n"
+    ASK_HEADER="${edge}\n${colorMsg}\n "
 
     echo -e "${ASK_HEADER}"
 }

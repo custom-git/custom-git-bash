@@ -8,12 +8,12 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __scope_header() {
 
-    local colorMsg="${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET} \n"
-    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}selects the commit scope, "
-    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skips this step\n\n"
-    colorMsg="${colorMsg}What is the scope of this change? (e.g. component or file name)"
+    local colorMsg="What is the scope of this change? (e.g. component or file name)\n"
+    colorMsg="${colorMsg}${BLUE}<esc>:${RESET} skips commit scope, "
+    colorMsg="${colorMsg}${BLUE}<enter>:${RESET} selects an action or a commit scope\n\n"
+    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET}"
 
-    local msg="What is the scope of this change? (e.g. component or file name)"
+    local msg="<esc>: skips commit scope, <enter>: selects an action or a commit scope"
     local edge="$(echo "${msg}" | sed "s/./-/g")"
     local GCOMMIT_SCOPE_HEADER="${edge}\n${colorMsg}\n${edge}\n "
 

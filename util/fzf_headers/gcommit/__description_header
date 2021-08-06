@@ -8,10 +8,10 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __description_header() {
 
-    local colorMsg="${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET} \n"
-    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}adds the description to the commit message, "
-    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}exits\n\n"
-    colorMsg="${colorMsg}Write a short, imperative tense description of the change (max 82 chars)"
+    local colorMsg="Write a short, imperative tense description of the change (max 82 chars)\n"
+    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}exits, "
+    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}adds the description to the commit message\n\n"
+    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET}"
 
     local msg="Write a short, imperative tense description of the change (max 82 chars)"
     local edge="$(echo "${msg}" | sed "s/./-/g")"

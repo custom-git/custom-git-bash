@@ -19,6 +19,8 @@ __assertgitrepo
 
 REPO_PATH="$(git rev-parse --show-toplevel)"
 COMMIT_SCOPE_FILE="${REPO_PATH}/.gitcommitscopes"
+ADD_NEW_SCOPE="ADD NEW SCOPE TO THE LIST"
+# DELETE_SCOPES="DELETE SCOPE(s) FROM THE LIST"
 
 function main() {
 
@@ -62,21 +64,16 @@ function main() {
     while true; do
         print_commit_msg "${commitMessage}"
         commitScope="$(get_commit_scope)"
-        [ "${commitScope}" != "ADD NEW SCOPE" ] && break
-
-        local GCOMMIT_SCOPE_HEADER="$(__new_scope_header)"
-        print_commit_msg "${commitMessage}"
-        commitScope="$(echo "" | grep "x" |\
-                        fzf --height 10%\
-                            --info=hidden\
-                            --bind 'enter:print-query'\
-                            --header "${GCOMMIT_SCOPE_HEADER}")"
-
-        # check if the new scope is already present
-        [ -n "${commitScope}" ] \
-            && ! grep -Fxq "${commitScope}" "${COMMIT_SCOPE_FILE}" \
-            && echo "${commitScope}" >> "${COMMIT_SCOPE_FILE}"
+        case "${commitScope}" in
+            "${ADD_NEW_SCOPE}") add_new_scope
+            ;;
+            # "${DELETE_SCOPES}") delete_scopes #TODO
+            # ;;
+            *) break
+            ;;
+        esac
     done
+
     [ -n "${commitScope}" ] && commitMessage="${commitMessage}(${commitScope})"
 
     [ "${isBreakingChange}" == "true" ] && commitMessage="${commitMessage}!"
@@ -130,14 +127,13 @@ function get_commit_type() {
 
 function get_commit_scope() {
 
-    if [[ ! -f "${COMMIT_SCOPE_FILE}" ]]; then
-        touch "${COMMIT_SCOPE_FILE}"
-    fi
-    local commitScopes=("ADD NEW SCOPE")
+    local commitScopes=("${ADD_NEW_SCOPE}")
     local commitScope=""
-    while IFS= read -r commitScope; do
-        commitScopes=("${commitScopes[@]}" "${commitScope}")
-    done < "${COMMIT_SCOPE_FILE}"
+    if [[ -f "${COMMIT_SCOPE_FILE}" ]]; then
+        while IFS= read -r commitScope; do
+            commitScopes=("${commitScopes[@]}" "${commitScope}")
+        done < "${COMMIT_SCOPE_FILE}"
+    fi
 
     local GCOMMIT_SCOPE_HEADER="$(__scope_header)"
     commitScope="$(printf "%s\n" "${commitScopes[@]}" |\
@@ -145,6 +141,28 @@ function get_commit_scope() {
                         --header "${GCOMMIT_SCOPE_HEADER}")"
 
     echo "${commitScope}"
+}
+
+function add_new_scope() {
+
+    local GCOMMIT_SCOPE_HEADER="$(__new_scope_header)"
+    print_commit_msg "${commitMessage}"
+    commitScope="$(echo "" | grep "x" |\
+                    fzf --height 10%\
+                        --info=hidden\
+                        --bind 'enter:print-query'\
+                        --header "${GCOMMIT_SCOPE_HEADER}")"
+
+    [ -z "${commitScope}" ] && return
+
+    if [[ ! -f "${COMMIT_SCOPE_FILE}" ]]; then
+        echo "${commitScope}" > "${COMMIT_SCOPE_FILE}"  # creates the file
+    else
+        # check if the scope is already present in the file
+        ! grep -Fxq "${commitScope}" "${COMMIT_SCOPE_FILE}" && {
+            echo "${commitScope}" >> "${COMMIT_SCOPE_FILE}" # appends to the file
+        }
+    fi
 }
 
 function get_commit_description() {

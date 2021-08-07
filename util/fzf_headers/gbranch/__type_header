@@ -8,13 +8,13 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __type_header() {
 
-    local colorMsg="${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/[optional type]/<branch_name>${RESET} \n"
-    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}selects the branch type, "
+    local colorMsg="Select the type of branch you're creating\n"
     colorMsg="${colorMsg}${BLUE}<?>: ${RESET}toggles type definition, "
-    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skips this step\n\n"
-    colorMsg="${colorMsg}Select the type of branch"
+    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skips the branch type, "
+    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}selects the branch type\n\n"
+    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/${MAGENTA}[optional type]/${RESET}${BLUE}<branch_name>${RESET}"
 
-	local msg="<enter>: selects the branch type, <?>: toggles type definition, <esc>: skips this step"
+	local msg=" <?>: toggles type definition, <esc>: skips the branch type, <enter>: selects the branch type"
     local edge="$(echo "${msg}" | sed "s/./-/g")"
     local GBRANCH_TYPE_HEADER="${edge}\n${colorMsg}\n${edge}\n "
 

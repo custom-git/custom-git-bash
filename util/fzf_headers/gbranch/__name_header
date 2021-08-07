@@ -8,10 +8,10 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __name_header() {
 
-    local colorMsg="${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/[optional type]/<branch_name>${RESET} \n"
-    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}appends the branch name, "
-    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}exits\n\n"
-    colorMsg="${colorMsg}What is the branch name?"
+    local colorMsg="What is the branch name?\n"
+    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}exits, "
+    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}ends the branch name with the input\n\n"
+    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/[optional type]/${MAGENTA}<branch_name>${RESET}"
 
     local msg="gbranch follows the format [optional prefix]/[optional type]/<branch_name>"
     local edge="$(echo "${msg}" | sed "s/./-/g")"

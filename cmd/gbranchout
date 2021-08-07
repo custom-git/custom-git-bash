@@ -41,7 +41,7 @@ function main() {
 
     printf "\r"
 
-    local confirmation="$(__ask "Create branch ${REVERSE}${branchName}${RESET} ?")"
+    local confirmation="$(__ask "Create branch ${REVERSE}${branchName}${RESET} ?" "false")"
     [ "${confirmation}" != "yes" ] && return
 
     git branch "${branchName}"

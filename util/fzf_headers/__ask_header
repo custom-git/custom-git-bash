@@ -9,12 +9,15 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 function __ask_header() {
 
     local question="${1}"
+    local escAction="${2}"
 
-    local colorMsg="${BLUE}<enter>: ${RESET}selects an option, "
-    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}exits\n\n"
-    colorMsg="${colorMsg}${question}"
+    local colorMsg="${question}\n"
+    colorMsg="${colorMsg}${BLUE}<esc>:${RESET} ${escAction}"
 
-    local msg="<enter>: selects an option, <esc>: exits"
+    local msg="${question}"
+    local msg1="<esc>: ${escAction}"
+    [ ${#msg} -lt ${#msg1} ] && msg="${msg1}"
+
     local edge="$(echo "${msg}" | sed "s/./-/g")"
     ASK_HEADER="${edge}\n${colorMsg}\n "
 

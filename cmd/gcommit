@@ -33,7 +33,7 @@ function main() {
         fi
         gstatus
 
-        local commitAll="$(__ask "Stage all the files and commit ?")"
+        local commitAll="$(__ask "Stage all the files?" "false")"
         if [[ "${commitAll}" == "yes" ]]; then
             git add -A
         else
@@ -45,8 +45,9 @@ function main() {
     gstatus
 
     local commitMessage=""
-    print_commit_msg "${commitMessage}"
 
+    # get commit type
+    print_commit_msg "${commitMessage}"
     local isBreakingChange=false
     local commitType="$(get_commit_type "${isBreakingChange}")"
     if [[ "${commitType}" == "BREAKING-CHANGE" ]]; then
@@ -60,6 +61,7 @@ function main() {
     }
     commitMessage="${commitType}"
 
+    # get commit scope
     local commitScope=""
     while true; do
         print_commit_msg "${commitMessage}"
@@ -73,22 +75,20 @@ function main() {
             ;;
         esac
     done
-
     [ -n "${commitScope}" ] && commitMessage="${commitMessage}(${commitScope})"
 
     [ "${isBreakingChange}" == "true" ] && commitMessage="${commitMessage}!"
 
     commitMessage="${commitMessage}: "
+
+    # get commit description
     print_commit_msg "${commitMessage}"
-
     local commitDescription="$(get_commit_description)"
-
     [ -z "${commitDescription}" ] && {
         __print_info "commit description can't be empty"
         return
     }
     commitMessage="${commitMessage}${commitDescription}"
-    printf "\r"
 
     clear
     git commit -m "${commitMessage}"
@@ -116,7 +116,8 @@ function get_commit_type() {
     local GCOMMIT_TYPE_HEADER="$(__type_header "${isBreakingChange}")"
 
     local commitType="$(printf "%s\n" "${commitTypes[@]}" |\
-                        fzf --height=60% --preview-window :10%\
+                        fzf --height=70% --preview-window :10%\
+                            --info=hidden\
                             --header "${GCOMMIT_TYPE_HEADER}"\
                             --bind '?:toggle-preview'\
                             --preview-window hidden\
@@ -138,6 +139,7 @@ function get_commit_scope() {
     local GCOMMIT_SCOPE_HEADER="$(__scope_header)"
     commitScope="$(printf "%s\n" "${commitScopes[@]}" |\
                     fzf --height 55%\
+                        --info=hidden\
                         --header "${GCOMMIT_SCOPE_HEADER}")"
 
     echo "${commitScope}"
@@ -148,7 +150,7 @@ function add_new_scope() {
     local GCOMMIT_SCOPE_HEADER="$(__new_scope_header)"
     print_commit_msg "${commitMessage}"
     commitScope="$(echo "" | grep "x" |\
-                    fzf --height 10%\
+                    fzf --height 32%\
                         --info=hidden\
                         --bind 'enter:print-query'\
                         --header "${GCOMMIT_SCOPE_HEADER}")"
@@ -169,7 +171,7 @@ function get_commit_description() {
 
     local GCOMMIT_DESCRIPTION_HEADER="$(__description_header)"
     local commitDescription="$(echo "" | grep "x" |\
-                                fzf --height 10%\
+                                fzf --height 32%\
                                     --info=hidden\
                                     --bind 'enter:print-query'\
                                     --header "${GCOMMIT_DESCRIPTION_HEADER}")"

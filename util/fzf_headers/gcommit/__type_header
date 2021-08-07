@@ -19,7 +19,10 @@ function __type_header() {
     colorMsg="${colorMsg}${BLUE}<?>: ${RESET}toggles type definition, "
     colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}exits, "
     colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}selects the commit type\n\n"
-    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET}"
+    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET}\n"
+    colorMsg="${colorMsg}${MAGENTA}<type>${BLUE}(optional scope): <description>\n\n"
+    colorMsg="${colorMsg}[optional body]\n\n"
+    colorMsg="${colorMsg}[optional footer(s)]${RESET}"
 
 	local msg="<?>: toggles type definition, <esc>: exits, <enter>: selects the commit type"
     local edge="$(echo "${msg}" | sed "s/./-/g")"

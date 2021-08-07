@@ -11,7 +11,10 @@ function __scope_header() {
     local colorMsg="What is the scope of this change? (e.g. component or file name)\n"
     colorMsg="${colorMsg}${BLUE}<esc>:${RESET} skips commit scope, "
     colorMsg="${colorMsg}${BLUE}<enter>:${RESET} selects an action or a commit scope\n\n"
-    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET}"
+    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gcommit${RESET} follows ${BLUE}https://www.conventionalcommits.org/${RESET}\n"
+    colorMsg="${colorMsg}${BLUE}<type>${MAGENTA}(optional scope)${BLUE}: <description>\n\n"
+    colorMsg="${colorMsg}[optional body]\n\n"
+    colorMsg="${colorMsg}[optional footer(s)]${RESET}"
 
     local msg="<esc>: skips commit scope, <enter>: selects an action or a commit scope"
     local edge="$(echo "${msg}" | sed "s/./-/g")"

@@ -8,10 +8,10 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __prefix_header() {
 
-    local colorMsg="${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/[optional type]/<branch_name>${RESET} \n"
-    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}adds the prefix to the branch name, "
-    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skips this step\n\n"
-    colorMsg="${colorMsg}(optional) Give a prefix to the branch name (e.g. issue number / JIRA ticket etc.)"
+    local colorMsg="(optional) Give a prefix to the branch name (e.g. issue number / JIRA ticket etc.)\n"
+    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skips the prefix, "
+    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}starts the branch name with the input prefix\n\n"
+    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${MAGENTA}[optional prefix]${RESET}${BLUE}/[optional type]/<branch_name>${RESET}"
 
     local msg="(optional) Give a prefix to the branch name (e.g. issue number / JIRA ticket etc.)"
     local edge="$(echo "${msg}" | sed "s/./-/g")"

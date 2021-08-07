@@ -8,9 +8,12 @@ source "${__CUSTOM_GIT_UTIL}"/fzf_headers/__ask_header
 function __ask() {
 
     local question="${1}"
-    local options=("yes" "no")
+    local noFirst="${2:-"true"}"
+    local escAction="${3:-"exits"}"
+    local options=("no" "yes")
+    [ "${noFirst}" == "false" ] && options=("yes" "no")
 
-    local ASK_HEADER="$(__ask_header "${question}")"
+    local ASK_HEADER="$(__ask_header "${question}" "${escAction}")"
     local choice="$(printf "%s\n" "${options[@]}"  |\
                     fzf --height 10%\
                         --info=hidden\

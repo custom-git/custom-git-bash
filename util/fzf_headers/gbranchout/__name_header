@@ -11,11 +11,11 @@ function __name_header() {
     local colorMsg="What is the branch name?\n"
     colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}exits, "
     colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}ends the branch name with the input\n\n"
-    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/[optional type]/${MAGENTA}<branch_name>${RESET}"
+    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gbranchout${RESET} follows the format ${BLUE}[optional prefix]/[optional type]/${MAGENTA}<branch_name>${RESET}"
 
-    local msg="gbranch follows the format [optional prefix]/[optional type]/<branch_name>"
+    local msg="gbranchout follows the format [optional prefix]/[optional type]/<branch_name>"
     local edge="$(echo "${msg}" | sed "s/./-/g")"
-    local GBRANCH_NAME_HEADER="${edge}\n${colorMsg}"
+    local GBRANCHOUT_NAME_HEADER="${edge}\n${colorMsg}"
 
-    echo -e "${GBRANCH_NAME_HEADER}"
+    echo -e "${GBRANCHOUT_NAME_HEADER}"
 }

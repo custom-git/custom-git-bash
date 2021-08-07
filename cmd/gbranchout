@@ -6,9 +6,9 @@
 
 source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
 source "${__CUSTOM_GIT_UTIL}"/__ask
-source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranch/__type_header
-source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranch/__prefix_header
-source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranch/__name_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranchout/__type_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranchout/__prefix_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranchout/__name_header
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_info
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_as
 source "${__CUSTOM_CONSOLE_UTIL}"/__common
@@ -57,23 +57,23 @@ function main() {
 
 function get_prefix() {
 
-    local GBRANCH_PREFIX_HEADER="$(__prefix_header)"
+    local GBRANCHOUT_PREFIX_HEADER="$(__prefix_header)"
     local prefix="$(echo "" | grep "x" |\
                     fzf --height 10%\
                         --info=hidden\
                         --bind 'enter:print-query'\
-                        --header "${GBRANCH_PREFIX_HEADER}")"
+                        --header "${GBRANCHOUT_PREFIX_HEADER}")"
     echo "${prefix}"
 }
 
 function get_branch_type() {
 
-    local GBRANCH_TYPE_HEADER="$(__type_header)"
+    local GBRANCHOUT_TYPE_HEADER="$(__type_header)"
     local branchTypes=("feat" "fix" "perf" "refactor" "test" "style" "docs" "build" "ci" "cd")
 
     local branchType="$(printf "%s\n" "${branchTypes[@]}" |\
                         fzf --height=60% --preview-window :10%\
-                            --header "${GBRANCH_TYPE_HEADER}"\
+                            --header "${GBRANCHOUT_TYPE_HEADER}"\
                             --bind '?:toggle-preview'\
                             --preview-window hidden\
                             --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gcommit_type_preview; __gcommit_type_preview {}")"
@@ -83,12 +83,12 @@ function get_branch_type() {
 
 function get_branch_name() {
 
-    local GBRANCH_NAME_HEADER="$(__name_header)"
+    local GBRANCHOUT_NAME_HEADER="$(__name_header)"
     local name="$(echo "" | grep "x" |\
                     fzf --height 10%\
                         --info=hidden\
                         --bind 'enter:print-query'\
-                        --header "${GBRANCH_NAME_HEADER}")"
+                        --header "${GBRANCHOUT_NAME_HEADER}")"
     echo "${name}"
 }
 

@@ -12,7 +12,7 @@ function __type_header() {
     colorMsg="${colorMsg}${BLUE}<?>: ${RESET}toggles type definition, "
     colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skips the branch type, "
     colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}selects the branch type\n\n"
-    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/${MAGENTA}[optional type]/${RESET}${BLUE}<branch_name>${RESET}"
+    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gbranch${RESET} follows the format ${BLUE}[optional prefix]/${MAGENTA}[optional type]${BLUE}/<branch_name>${RESET}"
 
 	local msg=" <?>: toggles type definition, <esc>: skips the branch type, <enter>: selects the branch type"
     local edge="$(echo "${msg}" | sed "s/./-/g")"

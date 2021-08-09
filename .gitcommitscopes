@@ -1,5 +1,5 @@
-gcommit
 gadd
-gbranchout
+gbranchcreate
+gcommit
 header
 init

@@ -173,6 +173,8 @@ function add_new_scope() {
             echo "${commitScope}" >> "${COMMIT_SCOPE_FILE}" # appends to the file
         }
     fi
+    sort "${COMMIT_SCOPE_FILE}" > "${COMMIT_SCOPE_FILE}_sorted"
+    mv "${COMMIT_SCOPE_FILE}_sorted" "${COMMIT_SCOPE_FILE}"
 }
 
 function get_commit_description() {

@@ -8,14 +8,10 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __name_header() {
 
-    local colorMsg="What is the branch name?\n"
-    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}exits, "
-    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}ends the branch name with the input\n\n"
-    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gbranchout${RESET} follows the format ${BLUE}[optional prefix]/[optional type]/${MAGENTA}<branch_name>${RESET}"
+    local colorMsg="${BLUE}<?>:${RESET} help, ${BLUE}<esc>:${RESET} exit"
 
-    local msg="gbranchout follows the format [optional prefix]/[optional type]/<branch_name>"
-    local edge="$(echo "${msg}" | sed "s/./-/g")"
-    local GBRANCHOUT_NAME_HEADER="${edge}\n${colorMsg}"
+    local edge="------------------------------------------"
+    local NAME_HEADER="${edge}\n${colorMsg}\n "
 
-    echo -e "${GBRANCHOUT_NAME_HEADER}"
+    echo -e "${NAME_HEADER}"
 }

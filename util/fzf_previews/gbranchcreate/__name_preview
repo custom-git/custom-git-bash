@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+#shellcheck disable=SC1091      # Not following: ./__println_as was not specified as input (see shellcheck -x)
+
+source "$__CUSTOM_CONSOLE_UTIL"/__println_as
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __name_preview() {
+
+    local colorMsg="[optional <prefix>]/[optional <type>]/${MAGENTA}<name>${RESET}\n"
+    colorMsg="${colorMsg}${MAGENTA}\t\t\t\t\t\t\t\t\t\t│${RESET}\n"
+    colorMsg="${colorMsg}${MAGENTA}\t\t\t\t\t\t\t\t\t\t│${RESET}\n"
+    colorMsg="${colorMsg}${MAGENTA}\t\t\t\t\t\t\t\t\t\t└─⫸ "
+    colorMsg="${colorMsg}a-short-branch-name${RESET}"
+
+    echo -e "\n${colorMsg}"
+}

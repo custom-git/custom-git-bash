@@ -20,16 +20,18 @@ function main() {
 
     __assertgitrepo
 
+    echo
+
     local branchName=""
-    print_branch_name "${branchName}"
+    printf "${branchName}"
 
     local prefix="$(get_prefix)"
     [ -n "${prefix}" ] && branchName="${prefix}/"
-    print_branch_name "${branchName}"
+    printf "${branchName}"
 
     local branchType="$(get_branch_type)"
     [ -n "${branchType}" ] && branchName="${branchName}${branchType}/"
-    print_branch_name "${branchName}"
+    printf "${branchName}"
 
     local name="$(get_branch_name)"
     [ -z "${name}" ] && {
@@ -37,11 +39,11 @@ function main() {
         return
     }
     branchName="${branchName}${name}"
-    print_branch_name "${branchName}"
+    printf "${branchName}"
 
     printf "\r"
 
-    local confirmation="$(__ask "Create branch ${REVERSE}${branchName}${RESET} ?" "false")"
+    local confirmation="$(__ask "Create branch ${BLUE}${branchName}${RESET} ?" "false")"
     [ "${confirmation}" != "yes" ] && return
 
     git branch "${branchName}"
@@ -51,50 +53,55 @@ function main() {
         exit ${FAILURE}
     fi
 
-    local switch="$(__ask "Switch to the new branch ${REVERSE}${branchName}${RESET} ?")"
+    local switch="$(__ask "Switch to the new branch ${BLUE}${branchName}${RESET} ?")"
     [ "${switch}" == "yes" ] && git checkout "${branchName}"
 }
 
 function get_prefix() {
 
-    local GBRANCHOUT_PREFIX_HEADER="$(__prefix_header)"
+    local PREFIX_HEADER="$(__prefix_header)"
     local prefix="$(echo "" | grep "x" |\
-                    fzf --height 10%\
+                    fzf --height 40%\
                         --info=hidden\
                         --bind 'enter:print-query'\
-                        --header "${GBRANCHOUT_PREFIX_HEADER}")"
+                        --header "${PREFIX_HEADER}"\
+                        --bind '?:toggle-preview'\
+                        --preview-window hidden\
+                        --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gbranchcreate/__prefix_preview;
+                            __prefix_preview")"
     echo "${prefix}"
 }
 
 function get_branch_type() {
 
-    local GBRANCHOUT_TYPE_HEADER="$(__type_header)"
+    local TYPE_HEADER="$(__type_header)"
     local branchTypes=("feat" "fix" "perf" "refactor" "test" "style" "docs" "build" "ci" "cd")
 
     local branchType="$(printf "%s\n" "${branchTypes[@]}" |\
-                        fzf --height=60% --preview-window :10%\
-                            --header "${GBRANCHOUT_TYPE_HEADER}"\
+                        fzf --height=70% --preview-window :30%\
+                            --info=hidden\
+                            --header "${TYPE_HEADER}"\
                             --bind '?:toggle-preview'\
                             --preview-window hidden\
-                            --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gcommit_type_preview; __gcommit_type_preview {}")"
+                            --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gbranchcreate/__type_preview;
+                                __type_preview {}")"
 
     echo "${branchType}"
 }
 
 function get_branch_name() {
 
-    local GBRANCHOUT_NAME_HEADER="$(__name_header)"
+    local NAME_HEADER="$(__name_header)"
     local name="$(echo "" | grep "x" |\
-                    fzf --height 10%\
+                    fzf --height 35%\
                         --info=hidden\
                         --bind 'enter:print-query'\
-                        --header "${GBRANCHOUT_NAME_HEADER}")"
+                        --header "${NAME_HEADER}"\
+                        --bind '?:toggle-preview'\
+                        --preview-window hidden\
+                        --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gbranchcreate/__name_preview;
+                            __name_preview")"
     echo "${name}"
-}
-
-function print_branch_name() {
-    __print_as "bold" "FORMATTED BRANCH NAME:- "
-    printf "${REVERSE}${1}${RESET}"
 }
 
 main

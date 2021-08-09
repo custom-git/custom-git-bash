@@ -121,8 +121,8 @@ function get_commit_type() {
                             --header "${GCOMMIT_TYPE_HEADER}"\
                             --bind '?:toggle-preview'\
                             --preview-window ${previewVisibility}\
-                            --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gcommit_type_preview;
-                                __gcommit_type_preview {} ${isBreakingChange}")"
+                            --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gcommit/__type_preview;
+                                __type_preview {} ${isBreakingChange}")"
 
     echo "${commitType}"
 }
@@ -145,8 +145,8 @@ function get_commit_scope() {
                         --header "${GCOMMIT_SCOPE_HEADER}"\
                         --bind '?:toggle-preview'\
                         --preview-window hidden\
-                        --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gcommit_scope_preview;
-                            __gcommit_scope_preview ${isBreakingChange}")"
+                        --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gcommit/__scope_preview;
+                            __scope_preview ${isBreakingChange}")"
 
     echo "${commitScope}"
 }
@@ -189,8 +189,8 @@ function get_commit_description() {
                                     --header "${GCOMMIT_DESCRIPTION_HEADER}"\
                                     --bind '?:toggle-preview'\
                                     --preview-window hidden\
-                                    --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gcommit_description_preview;
-                                        __gcommit_description_preview ${isBreakingChange}")"
+                                    --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gcommit/__description_preview;
+                                        __description_preview ${isBreakingChange}")"
     echo "${commitDescription}"
 }
 

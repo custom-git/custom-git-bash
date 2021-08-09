@@ -8,15 +8,11 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __type_header() {
 
-    local colorMsg="Select the type of branch you're creating\n"
-    colorMsg="${colorMsg}${BLUE}<?>: ${RESET}toggles type definition, "
-    colorMsg="${colorMsg}${BLUE}<esc>: ${RESET}skips the branch type, "
-    colorMsg="${colorMsg}${BLUE}<enter>: ${RESET}selects the branch type\n\n"
-    colorMsg="${colorMsg}${UNDERLINE}${MAGENTA}gbranchout${RESET} follows the format ${BLUE}[optional prefix]/${MAGENTA}[optional type]${BLUE}/<branch_name>${RESET}"
+    local colorMsg="${BLUE}<?>:${RESET} help, ${BLUE}<esc>:${RESET} skip branch type"
 
-	local msg=" <?>: toggles type definition, <esc>: skips the branch type, <enter>: selects the branch type"
+	local msg="<?>: help, <esc>: skip branch type"
     local edge="$(echo "${msg}" | sed "s/./-/g")"
-    local GBRANCHOUT_TYPE_HEADER="${edge}\n${colorMsg}\n${edge}\n "
+    local TYPE_HEADER="${edge}\n${colorMsg}\n${edge}\n "
 
-    echo -e "${GBRANCHOUT_TYPE_HEADER}"
+    echo -e "${TYPE_HEADER}"
 }

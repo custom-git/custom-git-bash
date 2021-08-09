@@ -5,7 +5,7 @@
 source "$__CUSTOM_CONSOLE_UTIL"/__println_as
 source "$__CUSTOM_CONSOLE_UTIL"/__common
 
-function __gcommit_description_preview() {
+function __description_preview() {
 
     local isBreakingChange="${1}"
 

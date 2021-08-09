@@ -5,10 +5,9 @@
 source "$__CUSTOM_CONSOLE_UTIL"/__println_as
 source "$__CUSTOM_CONSOLE_UTIL"/__common
 
-function __gcommit_type_preview() {
+function __type_preview() {
 
     local commit_type="${1}"
-    local isBreakingChange="${2}"
 
     case "${commit_type}" in
         feat) __println_as bold "${commit_type}: A new feature"
@@ -37,20 +36,9 @@ function __gcommit_type_preview() {
         ;;
     esac
 
-    local colorMsg="${MAGENTA}<type>${RESET}(optional <scope>)"
-    if [[ "${isBreakingChange}" == "true" ]]; then
-        colorMsg="${colorMsg}${MAGENTA}!${RESET}"
-    fi
-    colorMsg="${colorMsg}: <description>\n"
-    colorMsg="${colorMsg}${MAGENTA}  |${RESET}\n"
-    colorMsg="${colorMsg}${MAGENTA}  └─⫸ select the type of "
-    if [[ "${isBreakingChange}" == "false" ]]; then
-        colorMsg="${colorMsg}change${RESET}"
-    else
-        colorMsg="${colorMsg}BREAKING CHANGE${RESET}"
-    fi
-
+    local colorMsg="[optional <prefix>]/${MAGENTA}[optional <type>]${RESET}/<name>\n"
+    colorMsg="${colorMsg}${MAGENTA}\t\t\t\t\t\t\t\t│${RESET}\n"
+    colorMsg="${colorMsg}${MAGENTA}\t\t\t\t\t\t\t\t└─⫸ "
+    colorMsg="${colorMsg}type of branch you're creating${RESET}"
     echo -e "\n${colorMsg}"
-
-    echo -e "\ngcommit follows https://www.conventionalcommits.org"
 }

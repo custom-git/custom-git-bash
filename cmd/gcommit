@@ -116,7 +116,7 @@ function get_commit_type() {
     local GCOMMIT_TYPE_HEADER="$(__type_header)"
 
     local commitType="$(printf "%s\n" "${commitTypes[@]}" |\
-                        fzf --height=65% --preview-window :35%\
+                        fzf --height=70% --preview-window :35%\
                             --info=hidden\
                             --header "${GCOMMIT_TYPE_HEADER}"\
                             --bind '?:toggle-preview'\
@@ -142,7 +142,6 @@ function get_commit_scope() {
     local GCOMMIT_SCOPE_HEADER="$(__scope_header)"
     commitScope="$(printf "%s\n" "${commitScopes[@]}" |\
                     fzf --height=65% --preview-window :35%\
-                        --info=hidden\
                         --header "${GCOMMIT_SCOPE_HEADER}"\
                         --bind '?:toggle-preview'\
                         --preview-window hidden\
@@ -182,7 +181,7 @@ function get_commit_description() {
 
     local GCOMMIT_DESCRIPTION_HEADER="$(__description_header)"
     local commitDescription="$(echo "" | grep "x" |\
-                                fzf --height 35%\
+                                fzf --height 40%\
                                     --info=hidden\
                                     --bind 'enter:print-query'\
                                     --header "${GCOMMIT_DESCRIPTION_HEADER}"\

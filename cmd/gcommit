@@ -33,7 +33,7 @@ function main() {
         fi
         gstatus
 
-        local commitAll="$(__ask "Stage all the files?" "false")"
+        local commitAll="$(__ask "Stage all the files?")"
         if [[ "${commitAll}" == "yes" ]]; then
             git add -A
         else

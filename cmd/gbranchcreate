@@ -43,7 +43,7 @@ function main() {
 
     printf "\r"
 
-    local confirmation="$(__ask "Create branch ${BLUE}${branchName}${RESET} ?" "false")"
+    local confirmation="$(__ask "Create branch ${BLUE}${branchName}${RESET} ?")"
     [ "${confirmation}" != "yes" ] && return
 
     git branch "${branchName}"

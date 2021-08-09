@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+#shellcheck disable=SC1091      # Not following: ./__println_as was not specified as input (see shellcheck -x)
+
+source "$__CUSTOM_CONSOLE_UTIL"/__println_as
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __gcommit_scope_preview() {
+
+    local isBreakingChange="${1}"
+
+    local colorMsg="<type>${MAGENTA}(optional <scope>)${RESET}"
+    if [[ "${isBreakingChange}" == "true" ]]; then
+        colorMsg="${colorMsg}!"
+    fi
+    colorMsg="${colorMsg}: <description>\n"
+    colorMsg="${colorMsg}${MAGENTA}                  │${RESET}\n"
+    colorMsg="${colorMsg}${MAGENTA}                  └─⫸ select a commit scope or add a new one${RESET}"
+
+    echo -e "\n${colorMsg}"
+
+    echo -e "\ngcommit follows https://www.conventionalcommits.org"
+}

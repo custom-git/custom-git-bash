@@ -19,7 +19,7 @@ __assertgitrepo
 
 REPO_PATH="$(git rev-parse --show-toplevel)"
 COMMIT_SCOPE_FILE="${REPO_PATH}/.gitcommitscopes"
-ADD_NEW_SCOPE="ADD NEW SCOPE TO THE LIST"
+ADD_NEW_SCOPE="ADD NEW SCOPE"
 # DELETE_SCOPES="DELETE SCOPE(s) FROM THE LIST"
 
 function main() {
@@ -47,11 +47,11 @@ function main() {
     local commitMessage=""
 
     # get commit type
-    print_commit_msg "${commitMessage}"
+    printf "${commitMessage}"
     local isBreakingChange=false
     local commitType="$(get_commit_type "${isBreakingChange}")"
     if [[ "${commitType}" == "BREAKING-CHANGE" ]]; then
-        print_commit_msg "${commitMessage}"
+        printf "${commitMessage}"
         isBreakingChange=true
         commitType="$(get_commit_type "${isBreakingChange}")"
     fi
@@ -64,10 +64,10 @@ function main() {
     # get commit scope
     local commitScope=""
     while true; do
-        print_commit_msg "${commitMessage}"
-        commitScope="$(get_commit_scope)"
+        printf "${commitMessage}"
+        commitScope="$(get_commit_scope "${isBreakingChange}")"
         case "${commitScope}" in
-            "${ADD_NEW_SCOPE}") add_new_scope
+            "${ADD_NEW_SCOPE}") add_new_scope "${isBreakingChange}"
             ;;
             # "${DELETE_SCOPES}") delete_scopes #TODO
             # ;;
@@ -82,8 +82,8 @@ function main() {
     commitMessage="${commitMessage}: "
 
     # get commit description
-    print_commit_msg "${commitMessage}"
-    local commitDescription="$(get_commit_description)"
+    printf "${commitMessage}"
+    local commitDescription="$(get_commit_description "${isBreakingChange}")"
     [ -z "${commitDescription}" ] && {
         __print_info "commit description can't be empty"
         return
@@ -92,13 +92,11 @@ function main() {
 
     clear
     git commit -m "${commitMessage}"
-    git log -n 1
-    git status
+    git log
 
     echo
-    __print_info "To add the commit body/footer or edit the commit message, use "
-    __println_as magenta "    $ git commit --amend"
-    echo
+    echo "To add the commit body/footer or edit the commit message, do "
+    echo -e "    $ git commit --amend\n"
 }
 
 # Usage: get_commit_type true
@@ -109,24 +107,29 @@ function get_commit_type() {
 
     local commitTypes=("feat" "fix" "perf" "refactor" "test" "style" "docs" "build" "ci" "cd")
 
+    local previewVisibility="nohidden"
     [ "${isBreakingChange}" == "false" ] && {
         commitTypes=("${commitTypes[@]}" "BREAKING-CHANGE")
+        previewVisibility="hidden"
     }
 
-    local GCOMMIT_TYPE_HEADER="$(__type_header "${isBreakingChange}")"
+    local GCOMMIT_TYPE_HEADER="$(__type_header)"
 
     local commitType="$(printf "%s\n" "${commitTypes[@]}" |\
-                        fzf --height=70% --preview-window :10%\
+                        fzf --height=65% --preview-window :35%\
                             --info=hidden\
                             --header "${GCOMMIT_TYPE_HEADER}"\
                             --bind '?:toggle-preview'\
-                            --preview-window hidden\
-                            --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gcommit_type_preview; __gcommit_type_preview {}")"
+                            --preview-window ${previewVisibility}\
+                            --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gcommit_type_preview;
+                                __gcommit_type_preview {} ${isBreakingChange}")"
 
     echo "${commitType}"
 }
 
 function get_commit_scope() {
+
+    local isBreakingChange="${1}"
 
     local commitScopes=("${ADD_NEW_SCOPE}")
     local commitScope=""
@@ -138,19 +141,25 @@ function get_commit_scope() {
 
     local GCOMMIT_SCOPE_HEADER="$(__scope_header)"
     commitScope="$(printf "%s\n" "${commitScopes[@]}" |\
-                    fzf --height 55%\
+                    fzf --height=65% --preview-window :35%\
                         --info=hidden\
-                        --header "${GCOMMIT_SCOPE_HEADER}")"
+                        --header "${GCOMMIT_SCOPE_HEADER}"\
+                        --bind '?:toggle-preview'\
+                        --preview-window hidden\
+                        --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gcommit_scope_preview;
+                            __gcommit_scope_preview ${isBreakingChange}")"
 
     echo "${commitScope}"
 }
 
 function add_new_scope() {
 
+    local isBreakingChange="${1}"
+
     local GCOMMIT_SCOPE_HEADER="$(__new_scope_header)"
-    print_commit_msg "${commitMessage}"
+    printf "${commitMessage}"
     commitScope="$(echo "" | grep "x" |\
-                    fzf --height 32%\
+                    fzf --height 1%\
                         --info=hidden\
                         --bind 'enter:print-query'\
                         --header "${GCOMMIT_SCOPE_HEADER}")"
@@ -169,18 +178,19 @@ function add_new_scope() {
 
 function get_commit_description() {
 
+    local isBreakingChange="${1}"
+
     local GCOMMIT_DESCRIPTION_HEADER="$(__description_header)"
     local commitDescription="$(echo "" | grep "x" |\
-                                fzf --height 32%\
+                                fzf --height 35%\
                                     --info=hidden\
                                     --bind 'enter:print-query'\
-                                    --header "${GCOMMIT_DESCRIPTION_HEADER}")"
+                                    --header "${GCOMMIT_DESCRIPTION_HEADER}"\
+                                    --bind '?:toggle-preview'\
+                                    --preview-window hidden\
+                                    --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gcommit_description_preview;
+                                        __gcommit_description_preview ${isBreakingChange}")"
     echo "${commitDescription}"
-}
-
-function print_commit_msg() {
-    __print_as "bold" "COMMIT MESSAGE:- "
-    printf "${REVERSE}${1}${RESET}"
 }
 
 main

@@ -25,7 +25,7 @@ function main() {
 
 	while true; do
 		local str="$(git -c color.status=always status --short |\
-			fzf	--bind 'q:abort'\
+			fzf --bind 'q:abort'\
 				--bind '?:toggle-preview'\
 				--header "${GDIFF_HEADER}"\
 				--preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gdiff_preview; __gdiff_preview {}")"

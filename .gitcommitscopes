@@ -1,1 +1,8 @@
+ask
+gadd
+gbranchcreate
+gcommit
 gdiff
+header
+init
+new-command

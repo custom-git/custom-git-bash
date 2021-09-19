@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091	# Not following: was not specified as input (see shellcheck -x)
+#shellcheck disable=SC2155	# Declare and assign separately to avoid masking return values
+#shellcheck disable=SC2001  # See if you can use ${variable//search/replace} instead
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __verb_header() {
+
+    local msg="custom-git-explorer | <esc>: exit"
+    local colorMsg="${MAGENTA}${UNDERLINE}custom-git-explorer${RESET} | ${BLUE}<esc>:${RESET} exit"
+
+    local edge="$(echo "${msg}" | sed "s/./-/g")"
+    local verbHeader="${edge}\n${colorMsg}\n "
+
+    echo -e "${verbHeader}"
+}

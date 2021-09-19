@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091	# Not following: was not specified as input (see shellcheck -x)
+#shellcheck disable=SC2155	# Declare and assign separately to avoid masking return values
+#shellcheck disable=SC2001  # See if you can use ${variable//search/replace} instead
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+# Usage: __noun_header "show/view"
+function __noun_header() {
+
+    local verb="${1}"
+    local msg="${verb} | <ctrl-d>: more details, <esc>: back"
+    local colorMsg="${MAGENTA}${UNDERLINE}${verb}${RESET} | ${BLUE}<ctrl-d>${RESET}: more details, "
+    colorMsg="${colorMsg}${BLUE}<esc>:${RESET} back"
+
+    local edge="$(echo "${msg}" | sed "s/./-/g")"
+    local nounHeader="${edge}\n${colorMsg}\n "
+
+    echo -e "${nounHeader}"
+}

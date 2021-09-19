@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091	# Not following: was not specified as input (see shellcheck -x)
+
+source "${__CUSTOM_GIT_UTIL}"/custom-git-explorer/__get_nouns
+source "${__CUSTOM_CONSOLE_UTIL}"/__println_as
+
+# Usage: __verb_preview "add"
+function __verb_preview() {
+
+	local verb="${1}"
+	local NOUN_ARR=()
+	__get_nouns "${verb}"
+	__println_as bold "${verb}: "
+	echo
+	printf "%s\n" "${NOUN_ARR[@]}"
+}

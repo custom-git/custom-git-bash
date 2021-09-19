@@ -1,0 +1,53 @@
+#!/bin/bash
+
+#shellcheck disable=SC2155 	# Declare and assign separately to avoid masking return values
+#shellcheck disable=SC1091	# Not following: was not specified as input (see shellcheck -x)
+
+source "${__CUSTOM_GIT_UTIL}"/custom-git-explorer/__get_nouns
+source "${__CUSTOM_GIT_UTIL}"/custom-git-explorer/__open_web_page
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/custom-git-explorer/__verb_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/custom-git-explorer/__noun_header
+
+function main() {
+
+	while true; do
+
+		local verb="$(get_verb)"
+		[ -z "${verb}" ] && break
+
+		local noun="$(get_noun "${verb}")"
+		[ -n "${noun}" ] && __open_web_page "${verb}" "${noun}"
+	done
+}
+
+function get_verb() {
+
+    local verbs=("show/view" "add" "restore")
+    local verbHeader="$(__verb_header)"
+	local verb="$(printf "%s\n" "${verbs[@]}" |\
+                fzf --height=10% --preview-window right\
+					--header "${verbHeader}"\
+					--info=hidden\
+					--preview "source $__CUSTOM_GIT_UTIL/fzf_previews/custom-git-explorer/__verb_preview;
+						__verb_preview {}")"
+	echo "${verb}"
+}
+
+# Usage: get_noun "add"
+function get_noun() {
+
+	local verb="${1}"
+	local NOUN_ARR=()
+	__get_nouns "${verb}"
+    local nounHeader="$(__noun_header "${verb}")"
+	local noun="$(printf "%s\n" "${NOUN_ARR[@]}" |\
+                fzf --height=10% --preview-window right:65%\
+					--header "${nounHeader}"\
+					--info=hidden\
+					--bind "ctrl-d:execute-silent(source $__CUSTOM_GIT_UTIL/custom-git-explorer/__open_web_page; __open_web_page ${verb} {} &)"\
+					--preview "source $__CUSTOM_GIT_UTIL/fzf_previews/custom-git-explorer/__noun_preview;
+						__noun_preview ${verb} {}")"
+	echo "${noun}"
+}
+
+main

@@ -1,0 +1,108 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091	# Not following: was not specified as input (see shellcheck -x)
+
+source "${__CUSTOM_CONSOLE_UTIL}"/__println_as
+source "${__CUSTOM_CONSOLE_UTIL}"/__print_as
+source "${__CUSTOM_CONSOLE_UTIL}"/__print_err
+source "${__CUSTOM_CONSOLE_UTIL}"/__common
+
+# Usage: __noun_preview "add" "new changes"
+function __noun_preview() {
+
+	local verb="${1}"
+	local noun="${2}"
+
+	case "${verb}" in
+		"show/view")
+			__view "${noun}"
+		;;
+		"add")
+			__add "${noun}"
+		;;
+		"restore")
+			__restore "${noun}"
+		;;
+		*)
+			__print_err "[__noun_preview] verb: ${verb}, noun: unknown"
+		;;
+	esac
+}
+
+# Usage: __view "status"
+function __view() {
+
+	local noun="${1}"
+	local cmd=""
+	local desc=""
+	case "${noun}" in
+		"status")
+			cmd="gstatus"
+			desc="shows the status of the repository (staged, unstaged, untracked files etc.), after clearing the terminal screen"
+		;;
+		"uncommitted changes")
+			cmd="gdiff"
+			desc="view uncommitted changes of all the files (staged, unstaged, untracked etc.) in one scrollable list"
+		;;
+		"commit logs/history")
+			cmd="glog, gshow"
+			desc="view the commit history and corresponding changes"
+		;;
+		*)
+			__print_err "[__view] verb: ${verb}, noun: unknown"
+			return
+		;;
+	esac
+	__preview_template "${cmd}" "${desc}"
+}
+
+# Usage: __add "new changes"
+function __add() {
+
+	local noun="${1}"
+	local cmd=""
+	local desc=""
+	case "${noun}" in
+		"new changes")
+			cmd="gadd"
+			desc="select the modified or untracked files from a list to stage them for the next commit"
+		;;
+		*)
+			__print_err "[__add] verb: ${verb}, noun: unknown"
+			return
+		;;
+	esac
+	__preview_template "${cmd}" "${desc}"
+}
+
+# Usage: __restore "staged changes"
+function __restore() {
+
+	local noun="${1}"
+	local cmd=""
+	local desc=""
+	case "${noun}" in
+		"staged changes")
+			cmd="grestorestaged"
+			desc="select the files to unstage"
+		;;
+		"unstaged changes")
+			cmd="grestore"
+			desc="select the unstaged (working tree) files to restore to HEAD\nIt provides a prompt before removing the changes"
+		;;
+		*)
+			__print_err "[__view] verb: ${verb}, noun: unknown"
+			return
+		;;
+	esac
+	__preview_template "${cmd}" "${desc}"
+}
+
+function __preview_template() {
+	local cmd="${1}"
+	local desc="${2}"
+	__print_as bold "command: "
+	__println_as magenta "${cmd}"
+	__print_as bold "description: "
+	echo -e "${desc}"
+}

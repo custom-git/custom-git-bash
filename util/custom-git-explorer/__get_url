@@ -1,0 +1,60 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091	# Not following: was not specified as input (see shellcheck -x)
+
+source "$__CUSTOM_CONSOLE_UTIL"/__print_err
+source "$__CUSTOM_CONSOLE_UTIL"/__print_info
+
+# Usage: __get_url "add" "new changes"
+function __get_url() {
+
+	local verb="${1}"
+	local noun="${2}"
+	local url=""
+	case "${verb}" in
+		"show/view")
+			case "${noun}" in
+				"status")
+					url="https://bhavidhingra.github.io/just-my-docs/explorer/show/status"
+				;;
+				"uncommitted changes")
+					url="https://bhavidhingra.github.io/just-my-docs/explorer/show/uncommitted-changes"
+				;;
+				"commit logs/history")
+					url="https://bhavidhingra.github.io/just-my-docs/explorer/show/commit-logs"
+				;;
+				*)
+					__print_err "[__get_url] verb: ${verb}, noun: unknown"
+				;;
+			esac
+		;;
+		"add")
+			case "${noun}" in
+				"new changes")
+					url="https://bhavidhingra.github.io/just-my-docs/explorer/add/new-changes"
+				;;
+				*)
+					__print_err "[__get_url] verb: ${verb}, noun: unknown"
+				;;
+			esac
+		;;
+		"restore")
+			case "${noun}" in
+				"staged changes")
+					url="https://bhavidhingra.github.io/just-my-docs/explorer/restore/staged-changes"
+				;;
+				"unstaged changes")
+					url="https://bhavidhingra.github.io/just-my-docs/explorer/restore/unstaged-changes"
+				;;
+				*)
+					__print_err "[__get_url] verb: ${verb}, noun: unknown"
+				;;
+			esac
+		;;
+		*)
+			__print_err "[__get_url] unknown verb"
+		;;
+	esac
+
+	echo "${url}"
+}

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#shellcheck disable=SC2034	# appears unused. Verify use (or export if used externally)
+
+# Usage: __get_nouns "add"
+function __get_nouns() {
+
+	local verb="${1}"
+	case "${verb}" in
+		"show/view")
+			NOUN_ARR=("status" "uncommitted changes" "commit logs/history")
+		;;
+		"add")
+			NOUN_ARR=("new changes")
+		;;
+		"restore")
+			NOUN_ARR=("staged changes" "unstaged changes")
+		;;
+		*)
+			echo "[__get_explorer_nouns] shouldn't reach here"
+		;;
+	esac
+}

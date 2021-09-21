@@ -1,23 +1,26 @@
 #!/bin/bash
 
 #shellcheck disable=SC2034	# appears unused. Verify use (or export if used externally)
+#shellcheck disable=SC1091	# Not following: was not specified as input (see shellcheck -x)
+
+source "${__CUSTOM_CONSOLE_UTIL}"/__print_err
 
 # Usage: __get_nouns "add"
 function __get_nouns() {
 
 	local verb="${1}"
 	case "${verb}" in
-		"show/view")
-			NOUN_ARR=("status" "uncommitted changes" "commit logs/history")
+		"1. show/view")
+			NOUN_ARR=("1. status" "2. uncommitted changes" "3. commit logs/history")
 		;;
-		"add")
-			NOUN_ARR=("new changes")
+		"2. add")
+			NOUN_ARR=("1. new changes")
 		;;
-		"restore")
-			NOUN_ARR=("staged changes" "unstaged changes")
+		"3. restore")
+			NOUN_ARR=("1. staged changes" "2. unstaged changes")
 		;;
 		*)
-			echo "[__get_explorer_nouns] shouldn't reach here"
+			__print_err "[__noun_preview] verb: ${verb}, noun: unknown"
 		;;
 	esac
 }

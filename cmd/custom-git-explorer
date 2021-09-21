@@ -22,7 +22,7 @@ function main() {
 
 function get_verb() {
 
-    local verbs=("show/view" "add" "restore")
+    local verbs=("1. show/view" "2. add" "3. restore")
     local verbHeader="$(__verb_header)"
 	local verb="$(printf "%s\n" "${verbs[@]}" |\
                 fzf --height=10% --preview-window right\
@@ -39,14 +39,15 @@ function get_noun() {
 	local verb="${1}"
 	local NOUN_ARR=()
 	__get_nouns "${verb}"
-    local nounHeader="$(__noun_header "${verb}")"
+    local nounHeader="$(__noun_header "${verb/*. /}")"
 	local noun="$(printf "%s\n" "${NOUN_ARR[@]}" |\
                 fzf --height=10% --preview-window right:65%\
 					--header "${nounHeader}"\
 					--info=hidden\
+					--bind "enter:ignore"\
 					--bind "ctrl-d:execute-silent(source $__CUSTOM_GIT_UTIL/custom-git-explorer/__open_web_page; __open_web_page ${verb} {} &)"\
 					--preview "source $__CUSTOM_GIT_UTIL/fzf_previews/custom-git-explorer/__noun_preview;
-						__noun_preview ${verb} {}")"
+						__noun_preview ${verb/*. /} {}")"
 	echo "${noun}"
 }
 

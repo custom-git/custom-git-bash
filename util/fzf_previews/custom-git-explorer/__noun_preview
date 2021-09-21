@@ -36,15 +36,15 @@ function __view() {
 	local cmd=""
 	local desc=""
 	case "${noun}" in
-		"status")
+		"1. status")
 			cmd="gstatus"
 			desc="shows the status of the repository (staged, unstaged, untracked files etc.), after clearing the terminal screen"
 		;;
-		"uncommitted changes")
+		"2. uncommitted changes")
 			cmd="gdiff"
 			desc="view uncommitted changes of all the files (staged, unstaged, untracked etc.) in one scrollable list"
 		;;
-		"commit logs/history")
+		"3. commit logs/history")
 			cmd="glog, gshow"
 			desc="view the commit history and corresponding changes"
 		;;
@@ -63,7 +63,7 @@ function __add() {
 	local cmd=""
 	local desc=""
 	case "${noun}" in
-		"new changes")
+		"1. new changes")
 			cmd="gadd"
 			desc="select the modified or untracked files from a list to stage them for the next commit"
 		;;
@@ -82,11 +82,11 @@ function __restore() {
 	local cmd=""
 	local desc=""
 	case "${noun}" in
-		"staged changes")
+		"1. staged changes")
 			cmd="grestorestaged"
 			desc="select the files to unstage"
 		;;
-		"unstaged changes")
+		"2. unstaged changes")
 			cmd="grestore"
 			desc="select the unstaged (working tree) files to restore to HEAD\nIt provides a prompt before removing the changes"
 		;;

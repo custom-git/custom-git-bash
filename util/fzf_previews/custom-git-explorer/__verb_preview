@@ -11,7 +11,7 @@ function __verb_preview() {
 	local verb="${1}"
 	local NOUN_ARR=()
 	__get_nouns "${verb}"
-	__println_as bold "${verb}: "
+	__println_as bold "${verb/*. /}:- "
 	echo
 	printf "%s\n" "${NOUN_ARR[@]}"
 }

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+#shellcheck disable=SC1091      # Not following: ./__println_as was not specified as input (see shellcheck -x)
+
+source "$__CUSTOM_CONSOLE_UTIL"/__println_as
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __prefix_preview() {
+
+    local colorMsg="${MAGENTA}[optional <prefix>]${RESET}/[optional <type>]/<name>\n"
+    colorMsg="${colorMsg}${MAGENTA}              │${RESET}\n"
+    colorMsg="${colorMsg}${MAGENTA}              │${RESET}\n"
+    colorMsg="${colorMsg}${MAGENTA}              └─⫸ "
+    colorMsg="${colorMsg}e.g. issue number or JIRA ticket${RESET}"
+
+    echo -e "\n${colorMsg}"
+}

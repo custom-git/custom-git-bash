@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2155
+#shellcheck disable=SC2001
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __type_header() {
+
+    local colorMsg="${MAGENTA}${UNDERLINE}gcommit${RESET} "
+    colorMsg="${colorMsg}${BLUE}<?>:${RESET} help, ${BLUE}<esc>:${RESET} exit"
+
+	local msg="gcommit <?>: help, <esc>: exit"
+    local edge="$(echo "${msg}" | sed "s/./-/g")"
+    local GCOMMIT_TYPE_HEADER="${edge}\n${colorMsg}\n${edge}\n "
+
+    echo -e "${GCOMMIT_TYPE_HEADER}"
+}

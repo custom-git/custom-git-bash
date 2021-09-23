@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+#shellcheck disable=SC1091      # Not following: ./__println_as was not specified as input (see shellcheck -x)
+
+source "$__CUSTOM_CONSOLE_UTIL"/__println_as
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __description_preview() {
+
+    local isBreakingChange="${1}"
+
+    local colorMsg="<type>(optional <scope>)"
+    if [[ "${isBreakingChange}" == "true" ]]; then
+        colorMsg="${colorMsg}!"
+    fi
+    colorMsg="${colorMsg}: ${MAGENTA}<description>${RESET}\n"
+    colorMsg="${colorMsg}${MAGENTA}                             │${RESET}\n"
+    colorMsg="${colorMsg}${MAGENTA}                             └─⫸ "
+    colorMsg="${colorMsg}a short, imperitive tense description of the change${RESET}"
+
+    echo -e "\n${colorMsg}"
+
+    echo -e "\ngcommit follows https://www.conventionalcommits.org"
+}

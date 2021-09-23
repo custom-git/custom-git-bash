@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2155
+#shellcheck disable=SC2001
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __scope_header() {
+
+    local colorMsg="${BLUE}<?>:${RESET} help, ${BLUE}<esc>:${RESET} skip scope"
+
+    local msg="<?>: help, <esc>: skip scope"
+    local edge="$(echo "${msg}" | sed "s/./-/g")"
+    local GCOMMIT_SCOPE_HEADER="${edge}\n${colorMsg}\n${edge}\n "
+
+    echo -e "${GCOMMIT_SCOPE_HEADER}"
+}

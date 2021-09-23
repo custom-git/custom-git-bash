@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2155
+#shellcheck disable=SC2001
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __name_header() {
+
+    local colorMsg="${BLUE}<?>:${RESET} help, ${BLUE}<esc>:${RESET} exit"
+
+    local edge="------------------------------------------"
+    local NAME_HEADER="${edge}\n${colorMsg}\n "
+
+    echo -e "${NAME_HEADER}"
+}

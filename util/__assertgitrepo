@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=SC1091
+
+source "${__CUSTOM_GIT_UTIL}"/__isgitrepo
+
+function __assertgitrepo() {
+
+    if [[ $(__isgitrepo) == false ]]; then
+        echo "[AssertionError] should be a git repo."
+        exit 1
+    fi
+}

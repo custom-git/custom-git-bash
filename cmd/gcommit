@@ -1,0 +1,197 @@
+#!/bin/bash
+
+#shellcheck disable=SC2155
+#shellcheck disable=SC1091
+#shellcheck disable=SC2059
+
+source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
+source "${__CUSTOM_GIT_UTIL}"/__ask
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__type_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__scope_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__new_scope_header
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gcommit/__description_header
+source "${__CUSTOM_CONSOLE_UTIL}"/__print_info
+source "${__CUSTOM_CONSOLE_UTIL}"/__print_as
+source "${__CUSTOM_CONSOLE_UTIL}"/__println_as
+source "${__CUSTOM_CONSOLE_UTIL}"/__common
+
+__assertgitrepo
+
+REPO_PATH="$(git rev-parse --show-toplevel)"
+COMMIT_SCOPE_FILE="${REPO_PATH}/.gitcommitscopes"
+ADD_NEW_SCOPE="ADD NEW SCOPE"
+# DELETE_SCOPES="DELETE SCOPE(s) FROM THE LIST"
+
+function main() {
+
+    local numStagedFiles=$(git status --short | grep "^[A-Z]" -c)
+    if [[ $numStagedFiles -eq 0 ]]; then
+        local numUnstagedFiles=$(git status --short | grep "^.[A-Z?]" -c)
+        if [[ $numUnstagedFiles -eq 0 ]]; then
+            __print_info "Nothing to commit"
+            return
+        fi
+        gstatus
+
+        local commitAll="$(__ask "Stage all the files?")"
+        if [[ "${commitAll}" == "yes" ]]; then
+            git add -A
+        else
+            echo
+            __print_info "Stage the files to commit"
+            return
+        fi
+    fi
+    gstatus
+
+    local commitMessage=""
+
+    # get commit type
+    printf "${commitMessage}"
+    local isBreakingChange=false
+    local commitType="$(get_commit_type "${isBreakingChange}")"
+    if [[ "${commitType}" == "BREAKING-CHANGE" ]]; then
+        printf "${commitMessage}"
+        isBreakingChange=true
+        commitType="$(get_commit_type "${isBreakingChange}")"
+    fi
+    [ -z "${commitType}" ] && {
+        __print_info "commit type can't be empty"
+        return
+    }
+    commitMessage="${commitType}"
+
+    # get commit scope
+    local commitScope=""
+    while true; do
+        printf "${commitMessage}"
+        commitScope="$(get_commit_scope "${isBreakingChange}")"
+        case "${commitScope}" in
+            "${ADD_NEW_SCOPE}") add_new_scope "${isBreakingChange}"
+            ;;
+            # "${DELETE_SCOPES}") delete_scopes #TODO
+            # ;;
+            *) break
+            ;;
+        esac
+    done
+    [ -n "${commitScope}" ] && commitMessage="${commitMessage}(${commitScope})"
+
+    [ "${isBreakingChange}" == "true" ] && commitMessage="${commitMessage}!"
+
+    commitMessage="${commitMessage}: "
+
+    # get commit description
+    printf "${commitMessage}"
+    local commitDescription="$(get_commit_description "${isBreakingChange}")"
+    [ -z "${commitDescription}" ] && {
+        __print_info "commit description can't be empty"
+        return
+    }
+    commitMessage="${commitMessage}${commitDescription}"
+
+    clear
+    git commit -m "${commitMessage}"
+    git log
+
+    echo
+    echo "To add the commit body/footer or edit the commit message, do "
+    echo -e "    $ git commit --amend\n"
+}
+
+# Usage: get_commit_type true
+# $1 bool: isBreakingChange
+function get_commit_type() {
+
+    local isBreakingChange="${1}"
+
+    local commitTypes=("feat" "fix" "perf" "refactor" "test" "style" "docs" "build" "ci" "cd")
+
+    local previewVisibility="nohidden"
+    [ "${isBreakingChange}" == "false" ] && {
+        commitTypes=("${commitTypes[@]}" "BREAKING-CHANGE")
+        previewVisibility="hidden"
+    }
+
+    local GCOMMIT_TYPE_HEADER="$(__type_header)"
+
+    local commitType="$(printf "%s\n" "${commitTypes[@]}" |\
+                        fzf --height=70% --preview-window :35%\
+                            --info=hidden\
+                            --header "${GCOMMIT_TYPE_HEADER}"\
+                            --bind '?:toggle-preview'\
+                            --preview-window ${previewVisibility}\
+                            --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gcommit/__type_preview;
+                                __type_preview {} ${isBreakingChange}")"
+
+    echo "${commitType}"
+}
+
+function get_commit_scope() {
+
+    local isBreakingChange="${1}"
+
+    local commitScopes=("${ADD_NEW_SCOPE}")
+    local commitScope=""
+    if [[ -f "${COMMIT_SCOPE_FILE}" ]]; then
+        while IFS= read -r commitScope; do
+            commitScopes=("${commitScopes[@]}" "${commitScope}")
+        done < "${COMMIT_SCOPE_FILE}"
+    fi
+
+    local GCOMMIT_SCOPE_HEADER="$(__scope_header)"
+    commitScope="$(printf "%s\n" "${commitScopes[@]}" |\
+                    fzf --height=65% --preview-window :35%\
+                        --header "${GCOMMIT_SCOPE_HEADER}"\
+                        --bind '?:toggle-preview'\
+                        --preview-window hidden\
+                        --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gcommit/__scope_preview;
+                            __scope_preview ${isBreakingChange}")"
+
+    echo "${commitScope}"
+}
+
+function add_new_scope() {
+
+    local isBreakingChange="${1}"
+
+    local GCOMMIT_SCOPE_HEADER="$(__new_scope_header)"
+    printf "${commitMessage}"
+    commitScope="$(echo "" | grep "x" |\
+                    fzf --height 1%\
+                        --info=hidden\
+                        --bind 'enter:print-query'\
+                        --header "${GCOMMIT_SCOPE_HEADER}")"
+
+    [ -z "${commitScope}" ] && return
+
+    if [[ ! -f "${COMMIT_SCOPE_FILE}" ]]; then
+        echo "${commitScope}" > "${COMMIT_SCOPE_FILE}"  # creates the file
+    else
+        # check if the scope is already present in the file
+        ! grep -Fxq "${commitScope}" "${COMMIT_SCOPE_FILE}" && {
+            echo "${commitScope}" >> "${COMMIT_SCOPE_FILE}" # appends to the file
+        }
+    fi
+    sort "${COMMIT_SCOPE_FILE}" > "${COMMIT_SCOPE_FILE}_sorted"
+    mv "${COMMIT_SCOPE_FILE}_sorted" "${COMMIT_SCOPE_FILE}"
+}
+
+function get_commit_description() {
+
+    local isBreakingChange="${1}"
+
+    local GCOMMIT_DESCRIPTION_HEADER="$(__description_header)"
+    local commitDescription="$(echo "" | grep "x" |\
+                                fzf --height 40%\
+                                    --info=hidden\
+                                    --bind 'enter:print-query'\
+                                    --header "${GCOMMIT_DESCRIPTION_HEADER}"\
+                                    --bind '?:toggle-preview'\
+                                    --preview-window hidden\
+                                    --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gcommit/__description_preview;
+                                        __description_preview ${isBreakingChange}")"
+    echo "${commitDescription}"
+}
+
+main

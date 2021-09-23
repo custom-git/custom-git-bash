@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+#shellcheck disable=SC1091      # Not following: ./__println_as was not specified as input (see shellcheck -x)
+
+source "$__CUSTOM_CONSOLE_UTIL"/__println_as
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __type_preview() {
+
+    local commit_type="${1}"
+    local isBreakingChange="${2}"
+
+    case "${commit_type}" in
+        feat) __println_as bold "${commit_type}: A new feature"
+        ;;
+        fix) __println_as bold "${commit_type}: A bug fix"
+        ;;
+        perf) __println_as bold "${commit_type}: A code change that improves performance"
+        ;;
+        refactor) __println_as bold "${commit_type}: A code change that neither fixes a bug nor adds a feature"
+        ;;
+        test) __println_as bold "${commit_type}: Add missing tests or correct existing tests"
+        ;;
+        style) __println_as bold "${commit_type}: Changes that do not affect the meaning of the code (white-space, formatting, missing semicolons, etc)"
+        ;;
+        docs) __println_as bold "${commit_type}: Documentation only changes"
+        ;;
+        build) __println_as bold "${commit_type}: Changes that affect the build system or external dependencies"
+        ;;
+        ci) __println_as bold "${commit_type}: Changes to the CI configuration files and scripts"
+        ;;
+        cd) __println_as bold "${commit_type}: Changes to the CD configuration files and scripts"
+        ;;
+        BREAKING-CHANGE) __println_as bold "${commit_type}: Introduce a breaking API change"
+        ;;
+        *) __println_as bold "Unknown commit type"
+        ;;
+    esac
+
+    local colorMsg="${MAGENTA}<type>${RESET}(optional <scope>)"
+    if [[ "${isBreakingChange}" == "true" ]]; then
+        colorMsg="${colorMsg}${MAGENTA}!${RESET}"
+    fi
+    colorMsg="${colorMsg}: <description>\n"
+    colorMsg="${colorMsg}${MAGENTA}  |${RESET}\n"
+    colorMsg="${colorMsg}${MAGENTA}  └─⫸ select the type of "
+    if [[ "${isBreakingChange}" == "false" ]]; then
+        colorMsg="${colorMsg}change${RESET}"
+    else
+        colorMsg="${colorMsg}BREAKING CHANGE${RESET}"
+    fi
+
+    echo -e "\n${colorMsg}"
+
+    echo -e "\ngcommit follows https://www.conventionalcommits.org"
+}

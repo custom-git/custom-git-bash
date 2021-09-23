@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1091
+
+source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
+
+__assertgitrepo
+
 clear
 
 if [[ $# -eq 0 ]]; then

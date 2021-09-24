@@ -24,7 +24,7 @@ function __get_url() {
 					url="https://bhavidhingra.github.io/just-my-docs/explorer/show/commit-logs"
 				;;
 				*)
-					__print_err "[__get_url] verb: ${verb}, noun: unknown"
+					__print_err "[__get_url] verb: ${verb}, unknown noun: ${noun}"
 				;;
 			esac
 		;;
@@ -34,7 +34,7 @@ function __get_url() {
 					url="https://bhavidhingra.github.io/just-my-docs/explorer/add/new-changes"
 				;;
 				*)
-					__print_err "[__get_url] verb: ${verb}, noun: unknown"
+					__print_err "[__get_url] verb: ${verb}, unknown noun: ${noun}"
 				;;
 			esac
 		;;
@@ -47,12 +47,12 @@ function __get_url() {
 					url="https://bhavidhingra.github.io/just-my-docs/explorer/restore/unstaged-changes"
 				;;
 				*)
-					__print_err "[__get_url] verb: ${verb}, noun: unknown"
+					__print_err "[__get_url] verb: ${verb}, unknown noun: ${noun}"
 				;;
 			esac
 		;;
 		*)
-			__print_err "[__get_url] unknown verb"
+			__print_err "[__get_url] unknown verb: ${verb}"
 		;;
 	esac
 

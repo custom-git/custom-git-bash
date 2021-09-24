@@ -5,11 +5,11 @@
 
 source "$__CUSTOM_GIT_UTIL"/custom-git-explorer/__get_url
 
-# Usage: __open_web_page "add" "new changes"
+# Usage: __open_web_page "add" "1. new changes"
 function __open_web_page() {
 
 	local verb="${1}"
-	local noun="${2}"
+	local noun="${2/*. /}"
 	local url="$(__get_url "${verb}" "${noun}")"
 	[ -z "${url}" ] && return
 

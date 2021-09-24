@@ -10,17 +10,17 @@ function __get_nouns() {
 
 	local verb="${1}"
 	case "${verb}" in
-		"1. show/view")
+		"show/view")
 			NOUN_ARR=("1. status" "2. uncommitted changes" "3. commit logs/history")
 		;;
-		"2. add")
+		"add")
 			NOUN_ARR=("1. new changes")
 		;;
-		"3. restore")
+		"restore")
 			NOUN_ARR=("1. staged changes" "2. unstaged changes")
 		;;
 		*)
-			__print_err "[__noun_preview] verb: ${verb}, noun: unknown"
+			__print_err "[__get_nouns] unknown verb: ${verb}"
 		;;
 	esac
 }

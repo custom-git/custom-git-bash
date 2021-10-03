@@ -1,0 +1,29 @@
+{
+  "name": "custom-git-bash",
+  "version": "0.8.0",
+  "description": "open source command line git tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/custom-git/custom-git-bash.git"
+  },
+  "keywords": [
+    "git",
+    "fzf",
+    "bash",
+    "zsh"
+  ],
+  "author": "Bhavi Dhingra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/custom-git/custom-git-bash/issues"
+  },
+  "homepage": "https://github.com/custom-git/custom-git-bash#readme",
+  "devDependencies": {
+    "standard-version": "^9.3.1"
+  }
+}

@@ -10,6 +10,8 @@ source "${__CUSTOM_GIT_UTIL}"/fzf_headers/custom-git-explorer/__noun_header
 
 function main() {
 
+	clear
+
 	while true; do
 
 		local verb="$(get_verb)"

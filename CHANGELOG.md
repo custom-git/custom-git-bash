@@ -1,3 +1,14 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [0.8.1](https://github.com/custom-git/custom-git-bash/compare/v0.8.0...v0.8.1) (2021-10-04)
+
+
+### Bug Fixes
+
+* correct explorer URLs ([0bd00d9](https://github.com/custom-git/custom-git-bash/commit/0bd00d98e5cada5e82f8af13819ea0e1cc199413))
+
 ### Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.

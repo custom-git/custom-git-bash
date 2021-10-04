@@ -2,10 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.2](https://github.com/custom-git/custom-git-bash/compare/v0.8.1...v0.8.2)
+> 4 October 2021
+
+### Bug Fix
+
+* **custom-git-explorer:** suppress error output for xdg-open ([a25db84](https://github.com/custom-git/custom-git-bash/commit/a25db84c41ef1e7311ad1270602ec582c272d46c))
+
 ### [0.8.1](https://github.com/custom-git/custom-git-bash/compare/v0.8.0...v0.8.1)
 > 4 October 2021
 
-### Bug Fixes
+### Bug Fix
 
 * correct explorer URLs ([0bd00d9](https://github.com/custom-git/custom-git-bash/commit/0bd00d98e5cada5e82f8af13819ea0e1cc199413))
 

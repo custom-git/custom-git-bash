@@ -16,7 +16,7 @@ function __open_web_page() {
 	if command -v open >/dev/null 2>&1; then
 		open "${url}"
 	elif command -v xdg-open >/dev/null 2>&1; then
-		xdg-open "${url}"
+		xdg-open "${url}" &> /dev/null
 	else
 		__print_info "URL: ${url}"
 	fi

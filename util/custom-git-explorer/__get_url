@@ -15,13 +15,13 @@ function __get_url() {
 		"show/view")
 			case "${noun}" in
 				"status")
-					url="https://bhavidhingra.github.io/just-my-docs/explorer/show/status"
+					url="https://custom-git.io/explorer/show/status"
 				;;
 				"uncommitted changes")
-					url="https://bhavidhingra.github.io/just-my-docs/explorer/show/uncommitted-changes"
+					url="https://custom-git.io/explorer/show/uncommitted-changes"
 				;;
 				"commit logs/history")
-					url="https://bhavidhingra.github.io/just-my-docs/explorer/show/commit-logs"
+					url="https://custom-git.io/explorer/show/commit-logs"
 				;;
 				*)
 					__print_err "[__get_url] verb: ${verb}, unknown noun: ${noun}"
@@ -31,7 +31,7 @@ function __get_url() {
 		"add")
 			case "${noun}" in
 				"new changes")
-					url="https://bhavidhingra.github.io/just-my-docs/explorer/add/new-changes"
+					url="https://custom-git.io/explorer/add/new-changes"
 				;;
 				*)
 					__print_err "[__get_url] verb: ${verb}, unknown noun: ${noun}"
@@ -41,10 +41,10 @@ function __get_url() {
 		"restore")
 			case "${noun}" in
 				"staged changes")
-					url="https://bhavidhingra.github.io/just-my-docs/explorer/restore/staged-changes"
+					url="https://custom-git.io/explorer/restore/staged-changes"
 				;;
 				"unstaged changes")
-					url="https://bhavidhingra.github.io/just-my-docs/explorer/restore/unstaged-changes"
+					url="https://custom-git.io/explorer/restore/unstaged-changes"
 				;;
 				*)
 					__print_err "[__get_url] verb: ${verb}, unknown noun: ${noun}"

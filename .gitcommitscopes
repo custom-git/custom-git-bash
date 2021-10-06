@@ -5,6 +5,7 @@ gadd
 gbranchcreate
 gcommit
 gdiff
+gshow
 header
 init
 new-command

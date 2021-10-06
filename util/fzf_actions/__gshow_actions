@@ -12,7 +12,7 @@ function __gshow_actions() {
         __print_as "blue" "clipboard-cli"
         printf "%s\n\n" " is required to copy the commit SHA to the clipboard."
         printf "Please install from: "
-        __print_as "blue" "https://github.com/sindresorhus/clipboard-cli"
+        __print_as "blue" "https://github.com/sindresorhus/clipboard-cli#install"
         return
     fi
 

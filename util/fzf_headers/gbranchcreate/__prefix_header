@@ -9,9 +9,9 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 function __prefix_header() {
 
     local colorMsg="Write a prefix\n\n"
-    colorMsg="${colorMsg}${BLUE}<?>:${RESET} help, ${BLUE}<esc>:${RESET} skip prefix"
+    colorMsg="${colorMsg}${BLUE}esc:${RESET} skip prefix, ${BLUE}?:${RESET} toggle hint"
 
-    local msg="<?>: help, <esc>: skip prefix"
+    local msg="esc: skip prefix, ?: toggle hint"
     local edge="$(echo "${msg}" | sed "s/./-/g")"
     local GBRANCHCREATE_HEADER="${edge}\n${colorMsg}\n "
 

@@ -66,7 +66,6 @@ function get_prefix() {
                         --bind 'enter:print-query'\
                         --header "${PREFIX_HEADER}"\
                         --bind '?:toggle-preview'\
-                        --preview-window hidden\
                         --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gbranchcreate/__prefix_preview;
                             __prefix_preview")"
     echo "${prefix}"
@@ -82,7 +81,6 @@ function get_branch_type() {
                             --info=hidden\
                             --header "${TYPE_HEADER}"\
                             --bind '?:toggle-preview'\
-                            --preview-window hidden\
                             --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gbranchcreate/__type_preview;
                                 __type_preview {}")"
 
@@ -98,7 +96,6 @@ function get_branch_name() {
                         --bind 'enter:print-query'\
                         --header "${NAME_HEADER}"\
                         --bind '?:toggle-preview'\
-                        --preview-window hidden\
                         --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gbranchcreate/__name_preview;
                             __name_preview")"
     echo "${name}"

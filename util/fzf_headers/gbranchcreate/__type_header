@@ -8,9 +8,9 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __type_header() {
 
-    local colorMsg="${BLUE}<?>:${RESET} help, ${BLUE}<esc>:${RESET} skip branch type"
+    local colorMsg="${BLUE}esc:${RESET} skip type, ${BLUE}?:${RESET} toggle hint"
 
-	local msg="<?>: help, <esc>: skip branch type"
+	local msg="esc: skip type, ?: toggle hint"
     local edge="$(echo "${msg}" | sed "s/./-/g")"
     local TYPE_HEADER="${edge}\n${colorMsg}\n${edge}\n "
 

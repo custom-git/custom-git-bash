@@ -107,10 +107,8 @@ function get_commit_type() {
 
     local commitTypes=("feat" "fix" "perf" "refactor" "test" "style" "docs" "build" "ci" "cd")
 
-    local previewVisibility="nohidden"
     [ "${isBreakingChange}" == "false" ] && {
         commitTypes=("${commitTypes[@]}" "BREAKING-CHANGE")
-        previewVisibility="hidden"
     }
 
     local GCOMMIT_TYPE_HEADER="$(__type_header)"
@@ -120,7 +118,6 @@ function get_commit_type() {
                             --info=hidden\
                             --header "${GCOMMIT_TYPE_HEADER}"\
                             --bind '?:toggle-preview'\
-                            --preview-window ${previewVisibility}\
                             --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gcommit/__type_preview;
                                 __type_preview {} ${isBreakingChange}")"
 
@@ -144,7 +141,6 @@ function get_commit_scope() {
                     fzf --height=65% --preview-window :35%\
                         --header "${GCOMMIT_SCOPE_HEADER}"\
                         --bind '?:toggle-preview'\
-                        --preview-window hidden\
                         --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gcommit/__scope_preview;
                             __scope_preview ${isBreakingChange}")"
 
@@ -188,7 +184,6 @@ function get_commit_description() {
                                     --bind 'enter:print-query'\
                                     --header "${GCOMMIT_DESCRIPTION_HEADER}"\
                                     --bind '?:toggle-preview'\
-                                    --preview-window hidden\
                                     --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gcommit/__description_preview;
                                         __description_preview ${isBreakingChange}")"
     echo "${commitDescription}"

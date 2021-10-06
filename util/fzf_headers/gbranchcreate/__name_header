@@ -8,7 +8,7 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __name_header() {
 
-    local colorMsg="${BLUE}<?>:${RESET} help, ${BLUE}<esc>:${RESET} exit"
+    local colorMsg="${BLUE}esc:${RESET} exit, ${BLUE}?:${RESET} toggle hint"
 
     local edge="------------------------------------------"
     local NAME_HEADER="${edge}\n${colorMsg}\n "

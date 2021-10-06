@@ -8,8 +8,8 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __new_scope_header() {
 
-    local colorMsg="Enter the commit scope\n\n"
-    colorMsg="${colorMsg}${BLUE}<esc>:${RESET} go back"
+    local colorMsg="Enter the new commit scope\n\n"
+    colorMsg="${colorMsg}${BLUE}esc:${RESET} go back"
 
     local edge="-------------------------------------"
     local GCOMMIT_NEW_SCOPE_HEADER="${edge}\n${colorMsg}\n "

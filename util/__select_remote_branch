@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#shellcheck disable=SC2155  # Declare and assign separately to avoid masking return values.
+#shellcheck disable=SC1091  # Not following: ./fzf_headers/__select_branch_header was not specified as input (see shellcheck -x)
+
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/__select_branch_header
+
+# Usage: __select_remote_branch "gswitchremote" "select remote branch to switch to" "exit"
+function __select_remote_branch() {
+
+    local cmd="${1}"
+    local cmdMsg="${2}"
+    local escAction="${3}"
+    local HEADER="$(__select_branch_header "${cmd}" "${cmdMsg}" "${escAction}")"
+    local branchName="$(git branch -r --sort=-committerdate |\
+                        grep -v "\->" |\
+                        sed 's/^  origin\///g' |\
+                        fzf --height=65%\
+                            --header "${HEADER}")"
+
+    local rawBranchNameFile="$(getrawstr "${branchName}")"
+    echo "${rawBranchNameFile}" | xargs -I "{}" echo {}     # xargs used to handle "invalid reference" for special characters
+                                                            # like ', '#' in branch names
+}

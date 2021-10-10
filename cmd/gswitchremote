@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+#shellcheck disable=SC1091  # Not following: ./__assertgitrepo was not specified as input
+#shellcheck disable=SC2086  # Double quote to prevent globbing and word splitting
+#shellcheck disable=SC2155  # Declare and assign separately to avoid masking return values
+
+# ensure the command is run in a git repo
+source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
+source "${__CUSTOM_GIT_UTIL}"/__select_remote_branch
+source "${__CUSTOM_CONSOLE_UTIL}"/__exit_if_empty_str
+source "${__CUSTOM_CONSOLE_UTIL}"/__common
+
+main () {
+
+    __assertgitrepo
+
+    local branchName="$(__select_remote_branch "gswitchremote" "select remote branch to switch to" "exit")"
+    __exit_if_empty_str "${branchName}" ${SUCCESS}
+
+    clear
+    git switch "${branchName}"
+}
+
+if [[ $# -gt 0 ]]; then
+    # branch name is provided in command line arguments
+    git switch "$*"
+    exit ${SUCCESS}
+fi
+
+main

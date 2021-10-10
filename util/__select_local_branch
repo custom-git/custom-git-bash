@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#shellcheck disable=SC2155	#	Declare and assign separately to avoid masking return values.
+
+function __select_local_branch() {
+
+    local branchName=$(git branch --sort=-committerdate | fzf | sed 's/^. //g')
+    local rawBranchNameFile="$(getrawstr "${branchName}")"
+    echo "${rawBranchNameFile}" | xargs -I "{}" echo {}     # xargs used to handle "invalid reference" error in git switch command
+}

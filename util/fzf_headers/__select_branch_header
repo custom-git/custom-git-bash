@@ -6,8 +6,8 @@
 
 source "${__CUSTOM_CONSOLE_UTIL}"/__common	# for colors
 
-# Usage: __select_local_branch_header "gswitch" "select local branch" "exit"
-function __select_local_branch_header() {
+# Usage: __select_branch_header "gswitch" "select local branch" "exit"
+function __select_branch_header() {
 
 	local cmd="${1}"
 	local cmdMsg="${2}"

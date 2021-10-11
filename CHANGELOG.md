@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.3](https://github.com/custom-git/custom-git-bash/compare/v0.8.2...v0.8.3)
+> 12 October 2021
+
+### Features
+
+* **new-command:** gswitch switches between local branches ([24bed8b](https://github.com/custom-git/custom-git-bash/commit/24bed8bd35102bd311335f77a0b36bc522a0c39b))
+* **new-command:** gswitchremote helps to switch to a remote branch ([c3ed480](https://github.com/custom-git/custom-git-bash/commit/c3ed48096b799c96aea65ea0836bbb8b84331d06))
+
 ### [0.8.2](https://github.com/custom-git/custom-git-bash/compare/v0.8.1...v0.8.2)
 > 4 October 2021
 

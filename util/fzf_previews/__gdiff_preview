@@ -3,6 +3,7 @@
 #shellcheck disable=SC2155
 #shellcheck disable=SC1091
 
+source "${__CUSTOM_GIT_UTIL}"/__common
 source "$__CUSTOM_CONSOLE_UTIL"/__split_str
 source "$__CUSTOM_CONSOLE_UTIL"/__trim_double_quotes
 
@@ -15,10 +16,10 @@ function __gdiff_preview() {
 		file="$(__trim_double_quotes "${file}")"
 
 		if [[ ${str:0:1} != " " ]];then		# file is staged
-			git diff --cached --color -- "${file}"
+			git diff --cached --color -- "${file}" | ${CUSTOM_GIT_PAGER}
 		fi
 		if [[ ${str:1:1} != " " ]];then		# file is unstaged
-			git diff --color -- "${file}"
+			git diff --color -- "${file}" | ${CUSTOM_GIT_PAGER}
 		fi
 		return
 	fi
@@ -37,12 +38,12 @@ function __gdiff_preview() {
 	done
 
 	if [[ ${str:0:1} == "R" ]]; then
-		git diff --cached --color -- "${oldFile}" "${newFile}"
+		git diff --cached --color -- "${oldFile}" "${newFile}" | ${CUSTOM_GIT_PAGER}
 
 		if [[ ${str:1:1} != " " ]]; then
-			git diff --color -- "${newFile}"
+			git diff --color -- "${newFile}" | ${CUSTOM_GIT_PAGER}
 		fi
 	else
-		git diff --color -- "${oldFile}" "${newFile}"
+		git diff --color -- "${oldFile}" "${newFile}" | ${CUSTOM_GIT_PAGER}
 	fi
 }

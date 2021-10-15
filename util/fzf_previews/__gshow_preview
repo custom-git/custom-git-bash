@@ -3,8 +3,6 @@
 #shellcheck disable=SC2155
 #shellcheck disable=SC1091	# Not following: ./__common was not specified as input (see shellcheck -x)
 
-source "${__CUSTOM_GIT_UTIL}"/__common
-
 function __gshow_preview() {
 
 	local str="${1}"

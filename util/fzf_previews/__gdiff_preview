@@ -3,7 +3,6 @@
 #shellcheck disable=SC2155
 #shellcheck disable=SC1091
 
-source "${__CUSTOM_GIT_UTIL}"/__common
 source "$__CUSTOM_CONSOLE_UTIL"/__split_str
 source "$__CUSTOM_CONSOLE_UTIL"/__trim_double_quotes
 

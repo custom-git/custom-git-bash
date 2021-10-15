@@ -1,5 +1,0 @@
-#!/bin/bash
-
-#shellcheck disable=SC2034 	# CUSTOM_GIT_PAGER appears unused. Verify use (or export if used externally)
-
-CUSTOM_GIT_PAGER="$(git config core.pager || echo 'cat')"

@@ -17,3 +17,5 @@ fi
 
 export FZF_DEFAULT_OPTS="--reverse --border --ansi --preview-window wrap:down:70% --tabstop=4"
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color='preview-fg:-1'"
+
+export CUSTOM_GIT_PAGER="$(git config core.pager || echo 'cat')"

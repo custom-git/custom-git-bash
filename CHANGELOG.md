@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.5](https://github.com/custom-git/custom-git-bash/compare/v0.8.4...v0.8.5)
+> 15 October 2021
+
+
+### Features
+
+* **gdiff:** use delta as git's core pager ([c0292b4](https://github.com/custom-git/custom-git-bash/commit/c0292b49eac681c7929ec17852c6230b913df167))
+
 ### [0.8.3](https://github.com/custom-git/custom-git-bash/compare/v0.8.2...v0.8.3)
 > 12 October 2021
 

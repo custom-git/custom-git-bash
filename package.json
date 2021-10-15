@@ -1,6 +1,6 @@
 {
   "name": "custom-git-bash",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "open source command line git tool",
   "main": "index.js",
   "scripts": {

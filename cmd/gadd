@@ -35,7 +35,6 @@ function main() {
             --bind 'q:abort'\
             --bind '?:toggle-preview'\
             --header "${GADD_HEADER}"\
-            --preview-window hidden\
             --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gdiff_preview; __gdiff_preview {}" |\
         read_and_stage_files
 

@@ -47,33 +47,31 @@ function main() {
     local commitMessage=""
 
     # get commit type
-    printf "${commitMessage}"
+    print_commit_msg "${commitMessage}"
     local isBreakingChange=false
     local commitType="$(get_commit_type "${isBreakingChange}")"
     if [[ "${commitType}" == "BREAKING-CHANGE" ]]; then
-        printf "${commitMessage}"
+        print_commit_msg "${commitMessage}"
         isBreakingChange=true
         commitType="$(get_commit_type "${isBreakingChange}")"
     fi
     [ -z "${commitType}" ] && {
-        __print_info "commit type can't be empty"
+        __print_info "commit type is required, for more details visit https://conventionalcommits.org"
         return
     }
     commitMessage="${commitType}"
 
     # get commit scope
     local commitScope=""
-    while true; do
-        printf "${commitMessage}"
+    while [ -z "${commitScope}" ]; do
+        print_commit_msg "${commitMessage}"
         commitScope="$(get_commit_scope "${isBreakingChange}")"
-        case "${commitScope}" in
-            "${ADD_NEW_SCOPE}") add_new_scope "${isBreakingChange}"
-            ;;
-            # "${DELETE_SCOPES}") delete_scopes #TODO
-            # ;;
-            *) break
-            ;;
-        esac
+        [ -z "${commitScope}" ] && break
+
+        if [[ "${commitScope}" == "${ADD_NEW_SCOPE}" ]]; then
+            print_commit_msg "${commitMessage}"
+            commitScope="$(get_new_scope)"
+        fi
     done
     [ -n "${commitScope}" ] && commitMessage="${commitMessage}(${commitScope})"
 
@@ -82,10 +80,11 @@ function main() {
     commitMessage="${commitMessage}: "
 
     # get commit description
-    printf "${commitMessage}"
+    print_commit_msg "${commitMessage}"
     local commitDescription="$(get_commit_description "${isBreakingChange}")"
     [ -z "${commitDescription}" ] && {
-        __print_info "commit description can't be empty"
+        gstatus
+        __print_info "commit description is required, for more details visit https://conventionalcommits.org"
         return
     }
     commitMessage="${commitMessage}${commitDescription}"
@@ -126,6 +125,8 @@ function get_commit_type() {
 
 function get_commit_scope() {
 
+    sort_commit_scope_file
+
     local isBreakingChange="${1}"
 
     local commitScopes=("${ADD_NEW_SCOPE}")
@@ -147,19 +148,19 @@ function get_commit_scope() {
     echo "${commitScope}"
 }
 
-function add_new_scope() {
-
-    local isBreakingChange="${1}"
+function get_new_scope() {
 
     local GCOMMIT_SCOPE_HEADER="$(__new_scope_header)"
-    printf "${commitMessage}"
-    commitScope="$(echo "" | grep "x" |\
+    local commitScope="$(echo "" | grep "x" |\
                     fzf --height 1%\
                         --info=hidden\
                         --bind 'enter:print-query'\
                         --header "${GCOMMIT_SCOPE_HEADER}")"
 
-    [ -z "${commitScope}" ] && return
+    [ -z "${commitScope}" ] && {
+        echo ""
+        return
+    }
 
     if [[ ! -f "${COMMIT_SCOPE_FILE}" ]]; then
         echo "${commitScope}" > "${COMMIT_SCOPE_FILE}"  # creates the file
@@ -169,6 +170,13 @@ function add_new_scope() {
             echo "${commitScope}" >> "${COMMIT_SCOPE_FILE}" # appends to the file
         }
     fi
+    sort_commit_scope_file
+
+    echo "${commitScope}"
+}
+
+function sort_commit_scope_file() {
+
     sort "${COMMIT_SCOPE_FILE}" > "${COMMIT_SCOPE_FILE}_sorted"
     mv "${COMMIT_SCOPE_FILE}_sorted" "${COMMIT_SCOPE_FILE}"
 }
@@ -187,6 +195,11 @@ function get_commit_description() {
                                     --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/gcommit/__description_preview;
                                         __description_preview ${isBreakingChange}")"
     echo "${commitDescription}"
+}
+
+function print_commit_msg() {
+    __print_as "bold" "reverse" "commit message:-"
+    echo -n " ${1}"
 }
 
 main

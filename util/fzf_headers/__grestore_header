@@ -8,12 +8,12 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __grestore_header() {
 
-	local msg="grestore | <tab>: select multiple files, <enter>: restore modified file(s) / remove new files, <?>: toggle preview, <q/esc>: quit"
+	local msg="grestore | enter: restore modified file(s) / remove new file(s), tab: select multiple files, ?: toggle preview, q/esc: quit"
 	local colormsg="${UNDERLINE}${MAGENTA}grestore${RESET} | \
-${BLUE}<tab>: ${RESET}select multiple files, \
-${BLUE}<enter>: ${RESET}restore modified file(s) / remove new files, \
-${BLUE}<?>: ${RESET}toggle preview, \
-${BLUE}<q/esc>: ${RESET}quit"
+${BLUE}enter: ${RESET}restore modified file(s) / restore new file(s), \
+${BLUE}tab: ${RESET}select multiple files, \
+${BLUE}?: ${RESET}toggle preview, \
+${BLUE}q/esc: ${RESET}quit"
 
 	local edge="$(echo "${msg}" | sed -e 's/./-/g')"
 	local GRESTORE_HEADER="${edge}"'

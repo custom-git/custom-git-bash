@@ -12,10 +12,10 @@ function __ask_header() {
     local escAction="${2}"
 
     local colorMsg="${question}\n"
-    colorMsg="${colorMsg}${BLUE}<esc>:${RESET} ${escAction}"
+    colorMsg="${colorMsg}${BLUE}esc:${RESET} ${escAction}"
 
     local msg="${question}"
-    local msg1="<esc>: ${escAction}"
+    local msg1="esc: ${escAction}"
     [ ${#msg} -lt ${#msg1} ] && msg="${msg1}"
 
     local edge="$(echo "${msg}" | sed "s/./-/g")"

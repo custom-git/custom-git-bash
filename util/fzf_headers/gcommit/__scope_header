@@ -8,9 +8,9 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __scope_header() {
 
-    local colorMsg="${BLUE}<?>:${RESET} toggle hint, ${BLUE}<esc>:${RESET} skip scope"
+    local colorMsg="${BLUE}?:${RESET} toggle hint, ${BLUE}esc:${RESET} skip scope"
 
-    local msg="<?>: toggle hint, <esc>: skip scope"
+    local msg="?: toggle hint, esc: skip scope"
     local edge="$(echo "${msg}" | sed "s/./-/g")"
     local GCOMMIT_SCOPE_HEADER="${edge}\n${colorMsg}\n${edge}\n "
 

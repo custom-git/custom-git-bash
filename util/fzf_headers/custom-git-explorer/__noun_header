@@ -10,9 +10,9 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 function __noun_header() {
 
     local verb="${1}"
-    local msg="${verb} | <ctrl-d>: more details, <esc>: back"
-    local colorMsg="${MAGENTA}${UNDERLINE}${verb}${RESET} | ${BLUE}<ctrl-d>${RESET}: more details, "
-    colorMsg="${colorMsg}${BLUE}<esc>:${RESET} back"
+    local msg="${verb} | ctrl-d: more details, esc: back"
+    local colorMsg="${MAGENTA}${UNDERLINE}${verb}${RESET} | ${BLUE}ctrl-d${RESET}: more details, "
+    colorMsg="${colorMsg}${BLUE}esc:${RESET} back"
 
     local edge="$(echo "${msg}" | sed "s/./-/g")"
     local nounHeader="${edge}\n${colorMsg}\n "

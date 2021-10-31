@@ -14,10 +14,10 @@ main () {
 
     __assertgitrepo
 
+    clear
     local branchName="$(__select_remote_branch "gswitchremote" "select remote branch to switch to" "exit")"
     __exit_if_empty_str "${branchName}" ${SUCCESS}
 
-    clear
     git switch "${branchName}"
 }
 

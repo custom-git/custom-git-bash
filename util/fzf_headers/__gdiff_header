@@ -8,11 +8,12 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __gdiff_header() {
 
-	local msg="gdiff | enter: git diff, ?: toggle preview, q/esc: quit"
+	local msg="gdiff | enter: git diff | ctrl-r: refresh diff | ?: toggle preview | q/esc: quit"
 	local colormsg="${UNDERLINE}${MAGENTA}gdiff${RESET} | \
-${BLUE}enter: ${RESET}git diff, \
-${BLUE}?: ${RESET}toggle preview, \
-${BLUE}q/esc: ${RESET}quit"
+${BLUE}enter:${RESET} git diff | \
+${BLUE}ctrl-r:${RESET} refresh diff | \
+${BLUE}?:${RESET} toggle preview | \
+${BLUE}q/esc:${RESET} quit"
 
 	local edge="$(echo "${msg}" | sed -e 's/./-/g')"
 	local GDIFF_HEADER="${edge}"'

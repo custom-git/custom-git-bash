@@ -8,12 +8,12 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __gshow_header() {
 
-	local msg="gshow | enter: git show, ctrl-c: copy commit SHA, ?: toggle preview, q/esc: quit"
+	local msg="gshow | enter: git show | ctrl-c: copy commit SHA | ?: toggle preview | q/esc: quit"
 	local colormsg="${UNDERLINE}${MAGENTA}gshow${RESET} | \
-${BLUE}enter: ${RESET}git show, \
-${BLUE}ctrl-c: ${RESET}copy commit SHA, \
-${BLUE}?: ${RESET}toggle preview, \
-${BLUE}q/esc: ${RESET}quit"
+${BLUE}enter:${RESET} git show | \
+${BLUE}ctrl-c:${RESET} copy commit SHA | \
+${BLUE}?:${RESET} toggle preview | \
+${BLUE}q/esc:${RESET} quit"
 
 	local edge="$(echo "${msg}" | sed -e 's/./-/g')"
 	local GSHOW_HEADER="${edge}"'

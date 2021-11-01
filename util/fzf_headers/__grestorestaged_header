@@ -8,16 +8,17 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __grestorestaged_header() {
 
-	local msg="grestorestaged | enter: restore staged file(s), tab: select multiple files, ?: toggle preview, q/esc: quit"
-	local colormsg="${UNDERLINE}${MAGENTA}grestorestaged${RESET} | \
-${BLUE}enter: ${RESET}restore staged file(s), \
-${BLUE}tab: ${RESET}select multiple files, \
-${BLUE}?: ${RESET}toggle preview, \
+	local msg="grestorestaged | enter: restore staged file(s) | q/esc: quit   "
+	local colorMsgL1="${UNDERLINE}${MAGENTA}grestorestaged${RESET} | \
+${BLUE}enter: ${RESET}restore staged file(s) | \
 ${BLUE}q/esc: ${RESET}quit"
+	local colorMsgL2="                 ${BLUE}tab: ${RESET}select multiple files | \
+${BLUE}?: ${RESET}toggle preview"
 
 	local edge="$(echo "${msg}" | sed -e 's/./-/g')"
 	local GRESTORESTAGED_HEADER="${edge}"'
-'"${colormsg}"'
+'"${colorMsgL1}"'
+'"${colorMsgL2}"'
 '"${edge}"'
  '
 

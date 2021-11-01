@@ -27,6 +27,7 @@ function main() {
 		local str="$(git -c color.status=always status --short |\
 			fzf --bind 'q:abort'\
 				--bind '?:toggle-preview'\
+				--bind 'ctrl-r:refresh-preview'\
 				--header "${GDIFF_HEADER}"\
 				--preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gdiff_preview; __gdiff_preview {}")"
 

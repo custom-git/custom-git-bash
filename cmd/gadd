@@ -34,6 +34,7 @@ function main() {
         fzf -m --color 'fg:160'\
             --bind 'q:abort'\
             --bind '?:toggle-preview'\
+            --bind 'ctrl-r:refresh-preview'\
             --header "${GADD_HEADER}"\
             --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gdiff_preview; __gdiff_preview {}" |\
         read_and_stage_files

@@ -2,7 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [0.8.6](https://github.com/custom-git/custom-git-bash/compare/v0.8.5...v0.8.6) (2021-10-15)
+### [0.9.0](https://github.com/custom-git/custom-git-bash/compare/v0.8.6...v0.9.0)
+> 04 November 2021
+
+
+### Features
+
+* **gadd:** refresh diff with ctrl-r ([8721752](https://github.com/custom-git/custom-git-bash/commit/8721752f3cc985211f579a7c4c7745e63d9d476d))
+* **gcommit:** add new scope directly to commit message ([9197e69](https://github.com/custom-git/custom-git-bash/commit/9197e69f84aa6c09c7b75adc55ac449b5f79f65a))
+* **new-command:** `gmerge` merges a local repo to the current repo ([e2f1590](https://github.com/custom-git/custom-git-bash/commit/e2f15906e9d690f8c20e75ba11285de68716fc3e))
 
 ### [0.8.5](https://github.com/custom-git/custom-git-bash/compare/v0.8.4...v0.8.5)
 > 15 October 2021

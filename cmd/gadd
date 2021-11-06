@@ -14,9 +14,10 @@ source "$__CUSTOM_CONSOLE_UTIL"/__split_str
 # ensure the command is run in a git repo
 source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
 
+__assertgitrepo
+
 function main() {
 
-    __assertgitrepo
 
     local numUnstagedFiles=$(git status --short | grep "^.[A-Z?] " -c)
     if [[ $numUnstagedFiles -eq 0 ]]; then

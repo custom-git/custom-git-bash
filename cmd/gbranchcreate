@@ -16,9 +16,9 @@ source "${__CUSTOM_CONSOLE_UTIL}"/__common
 SUCCESS=0
 FAILURE=1
 
-function main() {
+__assertgitrepo
 
-    __assertgitrepo
+function main() {
 
     echo
 

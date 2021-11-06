@@ -1,0 +1,5 @@
+#!/bin/bash
+
+function __get_local_repo_path() {
+	git rev-parse --show-toplevel
+}

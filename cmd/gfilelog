@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091  # Not following: ./__assertgitrepo was not specified as input
+#shellcheck disable=SC2155  # Declare and assign separately to avoid masking return values
+
+source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/__gfilelog_header
+
+__assertgitrepo
+
+main () {
+
+    local GFILELOG_HEADER="$(__gfilelog_header)"
+	while true; do
+        selectedFile="$(fzf --header "${GFILELOG_HEADER}"\
+                            --bind '?:toggle-preview'\
+                            --preview "git log --follow -p --color=always -- {} | ${CUSTOM_GIT_PAGER}")"
+
+		if [[ -z "${selectedFile}" ]]; then
+			break
+		fi
+        git log --follow -p --color=always -- "${selectedFile}"
+    done
+}
+
+main

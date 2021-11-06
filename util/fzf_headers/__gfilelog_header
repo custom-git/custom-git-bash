@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2001
+#shellcheck disable=SC2155
+
+source "${__CUSTOM_CONSOLE_UTIL}"/__common
+
+function __gfilelog_header() {
+
+	local msg="gfilelog shows history of the highlighted file | enter: displays wider view"
+	local colorMsgL1="${UNDERLINE}${MAGENTA}gfilelog${RESET} shows history of the highlighted file | \
+${BLUE}enter:${RESET} displays wider view"
+	local colorMsgL2="         ${BLUE}?:${RESET} toggle preview | ${BLUE}esc:${RESET} quit"
+
+	local edge="$(echo "${msg}" | sed -e 's/./-/g')"
+	local GFILELOG_HEADER="${edge}"'
+'"${colorMsgL1}"'
+'"${colorMsgL2}"'
+'"${edge}"'
+ '
+
+	echo "${GFILELOG_HEADER}"
+}

@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.1](https://github.com/custom-git/custom-git-bash/compare/v0.9.0...v0.9.1) (2021-11-08)
+
+
+### Features
+
+* **new-command:** gfilelog shows the change history of a file ([96fa0c2](https://github.com/custom-git/custom-git-bash/commit/96fa0c289e998946e46811adb1ada0b8652bc054))
+
+
+### Bug Fixes
+
+* assert git repo when command line arguments are passed ([e8ec742](https://github.com/custom-git/custom-git-bash/commit/e8ec742a4e076e208c655eb5e2d8bc9fd7e7e6df))
+* **gcommit:** check before sorting commit scopes file ([8f0ade3](https://github.com/custom-git/custom-git-bash/commit/8f0ade350f471916ef95acaa1ddcebff6eaf1be5))
+
 ### [0.9.0](https://github.com/custom-git/custom-git-bash/compare/v0.8.6...v0.9.0)
 > 04 November 2021
 

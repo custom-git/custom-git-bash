@@ -177,6 +177,7 @@ function get_new_scope() {
 
 function sort_commit_scope_file() {
 
+    [ ! -f "${COMMIT_SCOPE_FILE}" ] && return
     sort "${COMMIT_SCOPE_FILE}" > "${COMMIT_SCOPE_FILE}_sorted"
     mv "${COMMIT_SCOPE_FILE}_sorted" "${COMMIT_SCOPE_FILE}"
 }

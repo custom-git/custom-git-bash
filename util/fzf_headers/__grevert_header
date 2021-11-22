@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2001
+#shellcheck disable=SC2155
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __grevert_header() {
+
+	local msg="grevert | enter: revert commit | ?: toggle preview | esc: quit"
+	local colormsg="${UNDERLINE}${MAGENTA}grevert${RESET} | \
+${BLUE}enter:${RESET} revert commit | \
+${BLUE}?:${RESET} toggle preview | \
+${BLUE}esc:${RESET} quit"
+
+	local edge="$(echo "${msg}" | sed -e 's/./-/g')"
+	local GREVERT_HEADER="${edge}"'
+'"${colormsg}"'
+'"${edge}"'
+ '
+
+	echo "${GREVERT_HEADER}"
+}

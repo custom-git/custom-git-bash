@@ -14,7 +14,6 @@ __assertgitrepo
 
 main () {
 
-    clear
     local branchName="$(__select_local_branch "gmerge" "select local branch to merge" "exit")"
     __exit_if_empty_str "${branchName}" ${SUCCESS}
 
@@ -24,7 +23,6 @@ main () {
 
 if [[ $# -gt 0 ]]; then
     # branch name is provided in command line arguments
-	clear
     git merge "$*"
 	git status
     exit ${SUCCESS}

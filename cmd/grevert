@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091 # Not following: ./__assertgitrepo was not specified as input
+#shellcheck disable=SC2155 # Declare and assign separately to avoid masking return values
+
+source "$__CUSTOM_GIT_UTIL"/fzf_headers/__grevert_header
+source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
+
+source "$__CUSTOM_CONSOLE_UTIL"/__print_err
+
+__assertgitrepo
+
+function main() {
+
+	local GREVERT_HEADER="$(__grevert_header)"
+
+    local selectedStr="$(git log --pretty='format:%C(auto)%h%d [%an] [%ar] %s' --graph --color=always |\
+                        fzf --bind "?:toggle-preview"\
+                            --header "${GREVERT_HEADER}"\
+                            --preview "source $__CUSTOM_GIT_UTIL/fzf_previews/__gshow_preview; __gshow_preview {}")"
+
+    if [ -z "${selectedStr}" ]; then
+        return
+    fi
+
+    local abbrCommitSHA="$(echo "${selectedStr}" | grep -E "[0-9a-z]+" -o | head -n 1)"
+    if [ -z "${abbrCommitSHA}" ]; then     # empty commitSHA
+        __print_err "invalid selection"
+        return
+    fi
+
+    git revert "${abbrCommitSHA}"
+}
+
+main

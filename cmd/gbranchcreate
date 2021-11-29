@@ -10,6 +10,7 @@ source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranchcreate/__type_header
 source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranchcreate/__prefix_header
 source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gbranchcreate/__name_header
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_info
+source "${__CUSTOM_CONSOLE_UTIL}"/__print_err
 source "${__CUSTOM_CONSOLE_UTIL}"/__print_as
 source "${__CUSTOM_CONSOLE_UTIL}"/__common
 

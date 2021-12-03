@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091
+#shellcheck disable=SC2001
+#shellcheck disable=SC2155
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __gstashlist_header() {
+
+	local msg="gstashlist | ?: toggle preview | esc: exit"
+	local colorMsg="${UNDERLINE}${MAGENTA}gstashlist${RESET} | \
+${BLUE}?:${RESET} toggle preview | \
+${BLUE}esc:${RESET} exit"
+
+	local edge="$(echo "${msg}" | sed -e 's/./-/g')"
+	local GSTASHLIST_HEADER="${edge}"'
+'"${colorMsg}"'
+'"${edge}"'
+ '
+
+	echo "${GSTASHLIST_HEADER}"
+}

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091 # Not following: ./__assertgitrepo was not specified as input
+#shellcheck disable=SC2155 # Declare and assign separately to avoid masking return values
+
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/__gstash_header
+source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
+source "${__CUSTOM_GIT_UTIL}"/__select_stash_id
+
+__assertgitrepo
+
+function main() {
+
+	local GSTASH_HEADER="$(__gstash_header "drop")"
+
+	local stashId="$(__select_stash_id "${GSTASH_HEADER}")"
+	[ -z "${stashId}" ] && return
+
+	git stash drop "${stashId}"
+}
+
+main

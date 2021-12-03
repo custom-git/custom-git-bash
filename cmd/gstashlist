@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091 # Not following: ./__assertgitrepo was not specified as input
+#shellcheck disable=SC2155 # Declare and assign separately to avoid masking return values
+
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/__gstashlist_header
+source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
+
+__assertgitrepo
+
+function main() {
+
+	local GSTASHLIST_HEADER="$(__gstashlist_header)"
+
+	git stash list | \
+		fzf --bind '?:toggle-preview'\
+			--bind 'enter:'\
+			--bind 'double-click:'\
+			--header "${GSTASHLIST_HEADER}"\
+			--preview "source ${__CUSTOM_GIT_UTIL}/fzf_previews/__gstash_preview; __gstash_preview {}"
+
+}
+
+main

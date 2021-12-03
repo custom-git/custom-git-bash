@@ -6,6 +6,7 @@ gbranchcreate
 gcommit
 gdiff
 gshow
+gstashapply
 gswitch
 header
 init

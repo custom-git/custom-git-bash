@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #shellcheck disable=SC2155
-#shellcheck disable=SC1091	# Not following: ./__common was not specified as input (see shellcheck -x)
 
 function __gshow_preview() {
 

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#shellcheck disable=SC2155 # Declare and assign separately to avoid masking return values
+#shellcheck disable=SC2001 # See if you can use ${variable//search/replace}
+
+# Usage: __select_stash_id "${HEADER}"
+function __select_stash_id() {
+
+	local GSTASH_HEADER="${1}"
+	local selectedStr="$(git stash list | \
+							fzf --bind '?:toggle-preview'\
+								--header "${GSTASH_HEADER}"\
+								--preview "source ${__CUSTOM_GIT_UTIL}/fzf_previews/__gstash_preview; __gstash_preview {}")"
+
+	echo "${selectedStr}" | sed 's/\:.*//g'
+}

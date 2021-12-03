@@ -8,11 +8,14 @@ source "$__CUSTOM_CONSOLE_UTIL"/__common
 
 function __gstash_header() {
 
-	local msg="gstashapply | enter: apply stash | ?: toggle preview"
-	local colorMsgL1="${UNDERLINE}${MAGENTA}gstashapply${RESET} | \
-${BLUE}enter:${RESET} apply stash | \
+	local op="${1}"
+	local cmd="gstash${1}"
+	local msg="${cmd} | enter: ${op} stash | ?: toggle preview"
+	local colorMsgL1="${UNDERLINE}${MAGENTA}gstash${op}${RESET} | \
+${BLUE}enter:${RESET} ${op} stash | \
 ${BLUE}?:${RESET} toggle preview"
-	local colorMsgL2="            | ${BLUE}esc:${RESET} quit"
+	local spaces="$(echo "${cmd}" | sed -e 's/./ /g')"
+	local colorMsgL2="${spaces} | ${BLUE}esc:${RESET} quit"
 
 	local edge="$(echo "${msg}" | sed -e 's/./-/g')"
 	local GSTASH_HEADER="${edge}"'

@@ -16,6 +16,7 @@ function main() {
 	local stashId="$(__select_stash_id "${GSTASH_HEADER}")"
 	[ -z "${stashId}" ] && return
 
+    clear
 	git stash apply "${stashId}"
 }
 

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091 # Not following: ./__common was not specified as input
+
+source "$__CUSTOM_CONSOLE_UTIL"/__common
+
+function __description_header() {
+
+    local colorMsg="Write a short description\n\n"
+    colorMsg="${colorMsg}${BLUE}esc:${RESET} exit"
+
+    local edge="----------------------------------------------------"
+    local GSTASH_DESCRIPTION_HEADER="${edge}\n${colorMsg}\n "
+
+    echo -e "${GSTASH_DESCRIPTION_HEADER}"
+}

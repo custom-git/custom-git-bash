@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#shellcheck disable=SC1091 # Not following: ./__assertgitrepo was not specified as input
+#shellcheck disable=SC2155 # Declare and assign separately to avoid masking return values
+
+source "${__CUSTOM_GIT_UTIL}"/__assertgitrepo
+source "${__CUSTOM_GIT_UTIL}"/fzf_headers/gstash/__description_header
+
+__assertgitrepo
+
+function main() {
+
+	stashDescription="$(get_stash_description)"
+	[ -z "${stashDescription}" ] && return
+
+	git stash save -u -k "${stashDescription}"
+	gstashlist
+	gstatus
+}
+
+function get_stash_description() {
+
+    local GSTASH_DESCRIPTION_HEADER="$(__description_header)"
+    local stashDescription="$(echo "" | grep "x" |\
+                                fzf --height 10%\
+                                    --info=hidden\
+                                    --bind 'enter:print-query'\
+                                    --header "${GSTASH_DESCRIPTION_HEADER}")"
+    echo "${stashDescription}"
+}
+
+main
+

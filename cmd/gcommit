@@ -104,7 +104,7 @@ function get_commit_type() {
 
     local isBreakingChange="${1}"
 
-    local commitTypes=("feat" "fix" "perf" "refactor" "test" "style" "docs" "build" "ci" "cd")
+    local commitTypes=("feat" "fix" "perf" "refactor" "test" "style" "docs" "build" "ci" "cd" "chore" "revert")
 
     [ "${isBreakingChange}" == "false" ] && {
         commitTypes=("${commitTypes[@]}" "BREAKING-CHANGE")
